@@ -31,6 +31,7 @@
     <link href="{{url('assets/build/css/custom.min.css')}}" rel="stylesheet">
     <link href="{{url('assets/build/css/custom.css')}}" rel="stylesheet">
     <link href="{{url('assets/bower_components/sweetalert2.css')}}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
 
 
@@ -107,5 +108,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 
     @yield('requirejs')
+    <script type="text/javascript">
+        $(window).on('load',function(){
+            $('#myModal').modal('show');
+        });
+    </script>
+    @includeIf('crm.includes.reminder_model')
   </body>
 </html>

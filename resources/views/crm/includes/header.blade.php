@@ -89,6 +89,7 @@
           </li>
         </ul>
       </nav>
+      
       @includeIf('crm.includes._message')
     </div>
   </div>

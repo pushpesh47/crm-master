@@ -23,26 +23,12 @@
         <div class="x_panel">
           <div class="x_title">
             <h2>Account <small></small></h2>
-             <a href="{{url('crm/form-module/create')}}" type="button" class="btn btn-info">Add Custom Field</a>
-            <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Settings 1</a>
-                    <a class="dropdown-item" href="#">Settings 2</a>
-                  </div>
-              </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a>
-              </li>
-            </ul>
+             <a href="{{url('crm/form-module/create')}}" type="button" class="btn btn-info nav navbar-right panel_toolbox">Add Custom Field</a>
             <div class="clearfix"></div>
           </div>
-          <div class="x_content">
             <form class="form-horizontal" role="add-account" method="POST" action="{{url('crm/accounts')}}">
-              <div class="container-fluid">
-              <div class="row">
+          <div class="x_content">
+              <div class="col-md-12 col-sm-12">
                 <span class="section">Account Information</span>
               </div>
               <div class="col-md-6 col-sm-6">
@@ -50,7 +36,7 @@
                   <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Customer Name<span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6">
-                    <input id="name" class="form-control" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Customer Name"  type="text">
+                    <input id="name" class="form-control"  placeholder="Customer Name"  type="text">
                   </div>
                 </div>
                 <div class="item form-group">
@@ -67,6 +53,7 @@
                   </label>
                   <div class="col-md-6 col-sm-6">
                     <select class="form-control" name="lead_source">
+                      <option value="">Select Lead Source</option>
                       @if(!empty($lead_source))
                         @foreach($lead_source as $value)
                           <option value="{{$value['lead_source']}}">{{ucfirst($value['lead_source'])}}</option>
@@ -100,6 +87,7 @@
                 </label>
                 <div class="col-md-6 col-sm-6">
                  <select class="form-control" name="account_status">
+                  <option value="">Select Account Status</option>
                     @if(!empty($account_status))
                     @foreach($account_status as $value)
                       <option value="{{$value['account_status']}}">{{ucfirst($value['account_status'])}}</option>
@@ -148,12 +136,14 @@
                   <input type="date" id="date_lead_recieved" placeholder="Date of Lead Recieved" name="date_lead_recieved" required="required"  class="form-control">
                 </div>
               </div>
-            
+            </div>
+            <div class="col-md-6 col-sm-6">
              <div class="item form-group">
                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="textarea">Sales Agent<span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6">
                  <select class="form-control" name="sales_agent">
+                  <option value="">Select Agent</option>
                    @if(!empty($user_role))
                     @foreach($user_role as $value)
                       <option value="{{$value['id']}}">{{ucfirst($value['first_name'].' '.$value['last_name'])}}</option>
@@ -162,10 +152,39 @@
                  </select>
                 </div>
               </div>
+              </div>
+              @if(!empty($account_info))
+                @foreach($account_info as $forms)
+                <div class="col-md-6 col-sm-6">
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['field_label']}}">{{ucfirst($forms['field_label'])}}<span class="required"></span>
+                    </label>
+                    <div class="col-md-6 col-sm-6">
+                    @if($forms['field_type']=='text')
+
+                    <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}} " class="form-control {{$forms['field_name']}}">
+
+                    @elseif($forms['field_type']=='textarea')
+                      <textarea  name="cf[{{$forms['field_name']}}]"  id="{{$forms['field_name']}}" placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}"></textarea>
+                    @elseif($forms['field_type']=='file')
+                      <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}">
+                    @elseif($forms['field_type']=='select')
+
+                      <select class="form-control {{$forms['field_name']}}" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]">
+                        <option value="admin">Admin</option>
+                        <option value="kaif">kaif</option>
+                        <option value="varun">Varun</option>
+                      </select>
+                    @endif
+                    </div>
+                  </div>
+                   </div>
+                @endforeach
+              @endif
             </div>
-            </div>
-            <div class="container-fluid">
-            <div class="row">
+
+            <div class="x_content">
+            <div class="col-md-12 col-sm-12">
               <span class="section">Lead Information</span>
             </div>
             <div class="col-md-6 col-sm-6">
@@ -197,7 +216,7 @@
                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="website">Date Client Became Aware of Injury/Negligence<span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6">
-                  <input type="date"  name="date_of_injury_"  placeholder="dd-mm-yyyy" class="form-control">
+                  <input type="date"  name="date_of_injury_aware"  placeholder="dd-mm-yyyy" class="form-control">
                 </div>
               </div>
             </div>
@@ -221,8 +240,8 @@
                 </div>
               </div>
             </div>
-              @if(!empty($form))
-                @foreach($form as $forms)
+              @if(!empty($lead_info))
+                @foreach($lead_info as $forms)
                 <div class="col-md-6 col-sm-6">
                   <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['field_label']}}">{{ucfirst($forms['field_label'])}}<span class="required"></span>
@@ -251,26 +270,30 @@
               @endif
             <div class="ln_solid"></div>
             </div>
-            <div class="container-fluid">
-              <span class="section">Callback Information</span>
+            <div class="x_content">
+              <div class="col-md-12 col-sm-12">
+                <span class="section">Callback Information</span>
+              </div>
                 <div class="col-md-6 col-sm-6">
                   <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Call back Date<span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6">
-                      <input id="name" class="form-control"  name="call_back_time" placeholder="Call back Date"  type="text">
+                      <input id="name" class="form-control"  name="call_back_time" placeholder="Call back Date"  type="time">
                     </div>
                   </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
                   <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Call Back Time<span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6">
-                      <input id="name" class="form-control" data-validate-length-range="6" data-validate-words="2" name="call_back_time" placeholder="Call Back Time"  type="text">
+                      <input id="name" class="form-control" data-validate-length-range="6" data-validate-words="2" name="call_back_date" placeholder="Call Back Time"  type="date">
                     </div>
                   </div>
                 </div>
-              @if(!empty($form))
-                @foreach($form as $forms)
+              @if(!empty($callback_infor))
+                @foreach($callback_infor as $forms)
                   <div class="col-md-6 col-sm-6">
                     <div class="item form-group">
                       <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['field_label']}}">{{ucfirst($forms['field_label'])}}<span class="required"></span>
@@ -297,8 +320,10 @@
 
               <div class="ln_solid"></div>
             </div>
-            <div class="container-fluid">
+            <div class="x_content">
+            <div class="col-md-12 col-sm-12">
               <span class="section">Customer Information</span>
+            </div>
             <div class="col-md-6 col-sm-6">
               <div class="item form-group">
                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">First Name<span class="required">*</span>
@@ -362,19 +387,18 @@
                 <label class="col-form-label col-md-3 col-sm-3 label-align" >Address, City, Postcode <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6">
-                  <textarea type="text" id="telephone" name="email"   placeholder="Address, City, Postcode" class="form-control"></textarea> 
+                  <textarea type="text" id="telephone" name="address"   placeholder="Address, City, Postcode" class="form-control"></textarea> 
                 </div>
               </div>
             </div>
-              @if(!empty($form))
-                @foreach($form as $forms)
+              @if(!empty($customer_info))
+                @foreach($customer_info as $forms)
                 <div class="col-md-6 col-sm-6">
                   <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['field_label']}}">{{ucfirst($forms['field_label'])}}<span class="required"></span>
                     </label>
                     <div class="col-md-6 col-sm-6">
                     @if($forms['field_type']=='text')
-
                     <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}} " class="form-control {{$forms['field_name']}}">
 
                     @elseif($forms['field_type']=='textarea')

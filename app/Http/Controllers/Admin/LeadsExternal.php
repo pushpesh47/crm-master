@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+Use App\Models\Account;
 class LeadsExternal extends Controller
 {
    function sendEmail($name='',$email='')
@@ -36,16 +36,13 @@ class LeadsExternal extends Controller
     }
     
 	public function getLead(){
-	date_default_timezone_set('Europe/London');
-
 		$st = date('Y-m-d',strtotime("-1 days"));
-		//$st = date('Y-m-d');
 		$t = date('00:00:00+0000');
 		$create_time = strtotime($st.'T'.$t);
 		$filter = [array(
-		"field" => "time_created",
-		"operator" => "GREATER_THAN",
-		"value" => $create_time
+			"field" => "time_created",
+			"operator" => "GREATER_THAN",
+			"value" => $create_time
 		)];
 		$filter = json_encode($filter);
 		$page_access_token='EAADB8YA7LhoBAMBsbZA4DgPJA3SwAfHLEr1dnSWu5qLtxAG0HX3toKSPZAaOAZBbtW1rHIN1YtjwPgJ7OZBzd5K9DUjkhwuURgTeh3ZBIqRPmbKtH2mGYBc5h6okx3A6NrZBBJhCUvWVLnffRfIau889kts4UtrZAxCvHepOnjirAZDZD';
@@ -112,44 +109,35 @@ class LeadsExternal extends Controller
 		}
 	}
 
-	
 	public function createLeadInVtiger($elements='',$phone=''){
 		date_default_timezone_set('Europe/London');
-		$data['accountname']=!empty($elements['full_name'])?$elements['full_name']:'';
-		$data['cf_846']=!empty($elements['email'])?$elements['email']:'';
+		$data['name']=!empty($elements['full_name'])?$elements['full_name']:'';
+		$data['email']=!empty($elements['email'])?$elements['email']:'';
 		if(!empty($elements['date_of_negligence'])){
-			$data['cf_855']=!empty($elements['date_of_negligence'])?$elements['date_of_negligence']:'';
+			$data['date_of_injury']=!empty($elements['date_of_negligence'])?$elements['date_of_negligence']:'';
 		}else{
-			$data['cf_855']=!empty($elements['date_of_injury_or_negligence'])?$elements['date_of_injury_or_negligence']:'';
+			$data['date_of_injury']=!empty($elements['date_of_injury_or_negligence'])?$elements['date_of_injury_or_negligence']:'';
 		}
-		$data['phone']=!empty($elements['phone_number'])?$elements['phone_number']:'';
-		$data['assigned_user_id']='19x1';
-		$data['cf_777']='Facebook';
-		$data['cf_763']='New';
-		$data['cf_853']=!empty(date('d-m-Y',strtotime($elements['cf_853'])))?date('d-m-Y',strtotime($elements['cf_853'])):'';
-		$jsonValue = json_encode($data,true);
-		$userData = $this->sessionDetails();
-		$value =$this->myCustom($userData['sessionName'],$data['cf_846']);
-		if(empty($value['result'])){
-		    $sms = $this->sendEmail($data['accountname'],$data['cf_846']);
-			$operation='create';
-			$sessionName=$userData['sessionName'];
-			$element=$elements;
-			$elementType='Accounts';
-			$create_lead_url='http://resolve-legal.borugroup.com/webservice.php';
-			$data['operation']=$operation;
-			$data['sessionName']=$sessionName;
-			$data['element']=$jsonValue;
-			$data['elementType']=$elementType;
-			$curl = curl_init($create_lead_url);
-			curl_setopt($curl, CURLOPT_POST, true);
-			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			$response = curl_exec($curl);
-			curl_close($curl);
-			$response = json_decode($response,true);
+		$data['mobile']=!empty($elements['phone_number'])?$elements['phone_number']:'';
+		$data['sales_agent']='1';
+		$data['lead_source']='Facebook';
+		$data['account_status']='New';
+		$data['date_lead_recieved']=!empty(date('d-m-Y',strtotime($elements['cf_853'])))?date('d-m-Y',strtotime($elements['cf_853'])):'';
+		$data['created_at']=date('Y-m-d H:i:s');
+		$data['updated_at']=date('Y-m-d H:i:s');
+		//$jsonValue = json_encode($data,true);
 		
-
+		$value= _arefy(Account::where(['email'=>$data['email'],'date_lead_recieved'=>$data['date_lead_recieved']])->get());
+		if(empty($value)){
+			$get=Account::orderBy('id','desc')->first();
+			if(!empty($get)){
+				$id=$get->id;
+			}else{
+				$id=0;
+			}
+			$data['customer_number']='ACCOUNT'.$id;
+		   // $sms = $this->sendEmail($data['name'],$data['email']);
+			$response =Account::insert($data);
 			if($response){
 				echo 'success';
 			}else{

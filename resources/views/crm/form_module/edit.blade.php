@@ -75,6 +75,19 @@
                  </select>
                 </div>
               </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Section Type<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                 <select class="form-control" name="section_type">
+                   <option value="">Select Section Type</option>
+                   <option @if($form['section_type']=='account_information') selected="" @endif value="account_information"> Account Information</option>
+                   <option @if($form['section_type']=='lead_information') selected="" @endif value="lead_information">Lead Information</option>
+                   <option @if($form['section_type']=='call_back_information') selected="" @endif value="call_back_information"> Call Back Information</option>
+                   <option @if($form['section_type']=='customer_information') selected="" @endif value="customer_information">Customer Information</option>
+                 </select>
+                </div>
+              </div>
               </div>
               
               <div class="ln_solid"></div>

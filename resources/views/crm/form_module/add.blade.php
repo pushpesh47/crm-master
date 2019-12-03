@@ -38,10 +38,11 @@
             </ul>
             <div class="clearfix"></div>
           </div>
-          <div class="x_content">
             <form class="form-horizontal" role="add-account" method="POST" action="{{url('crm/form-module')}}">
-             
-              <span class="section">Form Info</span>
+            <div class="x_content">
+              <div class="col-md-12 col-sm-12">
+                <span class="section">Form Info</span>
+              </div>
               <div class="col-md-12 col-sm-12">
                 <div class="item form-group">
                   <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Module<span class="required">*</span>
@@ -74,6 +75,19 @@
                  </select>
                 </div>
               </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Section Type<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                 <select class="form-control" name="section_type">
+                   <option value="">Select Section Type</option>
+                   <option value="account_information"> Account Information</option>
+                   <option value="lead_information">Lead Information</option>
+                   <option value="call_back_information"> Call Back Information</option>
+                   <option value="customer_information">Customer Information</option>
+                 </select>
+                </div>
+              </div>
               </div>
               
               <div class="ln_solid"></div>
@@ -83,8 +97,8 @@
                   <button  data-request="ajax-submit" data-target='[role="add-account"]' type="button" class="btn btn-success">Submit</button>
                 </div>
               </div>
+            </div>
             </form>
-          </div>
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ class Account extends Model
 
    
 
-	public static function list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
+	public static function list($fetch='array',$where='',$keys=['*'],$order='id-desc',$whereIn=''){
 		$tabel_data = self::select($keys)
 		->with([
 			'accountMore' => function($q){
@@ -30,6 +30,9 @@ class Account extends Model
 		]);
 		if($where){
 			$tabel_data->whereRaw($where);
+		}
+		if($whereIn){
+			$tabel_data->whereIn('id',$whereIn);
 		}
 		//$userlist['userCount'] = !empty($table_user->count())?$table_user->count():0;
 		if(!empty($order)){

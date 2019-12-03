@@ -33,7 +33,7 @@ class Validate
 			'date_of_birth' 		=> ['nullable','string'],
 			'gender' 				=> ['required','string'],
 			'phone_code' 			=> ['nullable','required_with:mobile_number','string'],
-			'mobile_number' 		=> ['required','numeric','digits:10'],
+			'mobile_number' 		=> ['required'],
 			'req_mobile_number' 	=> ['required','required_with:phone_code','numeric','digits:10'],
 			'country' 				=> ['required','string'],
 			'address'           	=> ['nullable','string','max:1500'],

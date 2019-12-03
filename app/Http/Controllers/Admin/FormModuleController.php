@@ -32,19 +32,19 @@ class FormModuleController extends Controller
                         data-url="'.url(sprintf('crm/form-module/status/?id=%s&status=inactive',___encrypt($item['id']))).'" 
                         data-request="ajax-confirm"
                         data-ask_image="'.url('assets/images/inactive-user.png').'"
-                        data-ask="Would you like to change '.$item['field_label'].' status from active to inactive?" title="Update Status"><i class="fa fa-fw fa-ban"></i></a>';
+                        data-ask="Would you like to change '.$item['field_label'].' status from active to inactive?" title="Update Status"><i class="fa fa-fw fa-ban"></i></a> |';
                 }elseif($item['status'] == 'inactive'){
                     $html   .= '<a href="javascript:void(0);" 
                         data-url="'.url(sprintf('crm/form-module/status/?id=%s&status=active',___encrypt($item['id']))).'" 
                         data-request="ajax-confirm"
                         data-ask_image="'.url('assets/images/active-user.png').'"
-                        data-ask="Would you like to change '.$item['field_label'].' status from inactive to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a>';
+                        data-ask="Would you like to change '.$item['field_label'].' status from inactive to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a> |';
                 }elseif($item['status'] == 'pending'){
                     $html   .= '<a href="javascript:void(0);" 
                         data-url="'.url(sprintf('crm/form-module/status/?id=%s&status=active',___encrypt($item['id']))).'" 
                         data-request="ajax-confirm"
                         data-ask_image="'.url('assets/images/active-user.png').'"
-                        data-ask="Would you like to change '.$item['field_label'].' status from pending to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a>';
+                        data-ask="Would you like to change '.$item['field_label'].' status from pending to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a> |';
                 }
                 $html   .= '<a href="javascript:void(0);" 
                         data-url="'.url(sprintf('crm/form-module/status/?id=%s&status=trashed',___encrypt($item['id']))).'" 
@@ -96,6 +96,7 @@ public function store(Request $request)
                 $data['field_label']=$request->field_label;
                 $data['field_type']=$request->field_type;
                 $data['module_type']=$request->module_type;
+                $data['section_type']=$request->section_type;
                 $data['created_at']=date('Y-m-d H:i:s');
                 $data['updated_at']=date('Y-m-d H:i:s');
                 $add = DynamicForm::insertGetId($data);
@@ -140,6 +141,7 @@ public function store(Request $request)
                 $data['field_label']=$request->field_label;
                 $data['field_type']=$request->field_type;
                 $data['module_type']=$request->module_type;
+                $data['section_type']=$request->section_type;
                 $data['updated_at']=date('Y-m-d H:i:s');
                 $add = DynamicForm::where('id',$id)->update($data);
                 

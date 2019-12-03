@@ -104,11 +104,23 @@ $(document).on('click','[data-request="ajax-submit"]',function(){
 $(document).on('click','[data-request="ajax-confirm"]',function(){
     $('.alert').remove(); $(".has-error").removeClass('has-error');$('.error-message').remove();
 
+    var $formData       = new FormData();
     var $this       = $(this);
     var $url        = $this.data('url');
     var $ask        = $this.data('ask');
     var $askImage  = $this.data('ask_image');
-
+    var $id  = $this.data('id');
+ 
+    if($id=='bulk-delete'){
+        $('#popup').show();  $('.alert').remove(); $(".has-error").removeClass('has-error');$('.error-message').remove();
+        var $values = $("input[name='account[]']:checked").map(function(){return $(this).val();}).get();
+         if (typeof $values !== 'undefined' && $values.length == 0) {
+            alert('Please select at least one checkbox');
+            return false;
+          }   
+          console.log($values);
+        $formData.append('user[]',$values);
+     }
     swal({
         html: $ask,
         showLoaderOnConfirm: true, 
@@ -128,6 +140,10 @@ $(document).on('click','[data-request="ajax-confirm"]',function(){
                     $.ajax({
                         method: "POST",
                         url: $url,
+                        data:$formData,
+                        dataType:'JSON',
+                        processData:false,
+                        contentType:false,
                     })
                     .done(function($response) {
                         if($response.status == true){
@@ -203,19 +219,17 @@ $(document).on('keypress keyup','[data-request="isnumeric"]', function(event){
 
  $(document).on('click','[data-request="ajax-get-form"]',function(){
     var $this           = $(this);
-     var $type             = $this.data('type');
-     console.log($type,);
-     if($type=='single'){
+    var $type           = $this.data('type');
+    if($type=='single'){
         var $values=$this.data('value');
-     }else{
-
+    }else{
         $('#popup').show();  $('.alert').remove(); $(".has-error").removeClass('has-error');$('.error-message').remove();
         var $values = $("input[name='account[]']:checked").map(function(){return $(this).val();}).get();
          if (typeof $values !== 'undefined' && $values.length == 0) {
             alert('Please select at least one checkbox');
             return false;
           }   
-     }
+    }
     var $formData       = new FormData();
     var $id             = $this.data('id');
     var $target         = $this.data('target');

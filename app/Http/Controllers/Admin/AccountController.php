@@ -50,19 +50,19 @@ class AccountController extends Controller
                         data-url="'.url(sprintf('crm/accounts/status/?id=%s&status=inactive',___encrypt($item['id']))).'" 
                         data-request="ajax-confirm"
                         data-ask_image="'.url('assets/images/inactive-user.png').'"
-                        data-ask="Would you like to change '.$item['first_name'].' status from active to inactive?" title="Update Status"><i class="fa fa-fw fa-ban"></i></a>';
+                        data-ask="Would you like to change '.$item['first_name'].' status from active to inactive?" title="Update Status"><i class="fa fa-fw fa-ban"></i></a> |';
                 }elseif($item['status'] == 'inactive'){
                     $html   .= '<a href="javascript:void(0);" 
                         data-url="'.url(sprintf('crm/accounts/status/?id=%s&status=active',___encrypt($item['id']))).'" 
                         data-request="ajax-confirm"
                         data-ask_image="'.url('assets/images/active-user.png').'"
-                        data-ask="Would you like to change '.$item['first_name'].' status from inactive to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a>';
+                        data-ask="Would you like to change '.$item['first_name'].' status from inactive to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a> |';
                 }elseif($item['status'] == 'pending'){
                     $html   .= '<a href="javascript:void(0);" 
                         data-url="'.url(sprintf('crm/accounts/status/?id=%s&status=active',___encrypt($item['id']))).'" 
                         data-request="ajax-confirm"
                         data-ask_image="'.url('assets/images/active-user.png').'"
-                        data-ask="Would you like to change '.$item['first_name'].' status from pending to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a>';
+                        data-ask="Would you like to change '.$item['first_name'].' status from pending to active?" title="Update Status"><i class="fa fa-fw fa-check"></i></a> |';
                 }
                 $html   .= '<a href="javascript:void(0);" 
                         data-url="'.url(sprintf('crm/accounts/status/?id=%s&status=trashed',___encrypt($item['id']))).'" 
@@ -78,7 +78,7 @@ class AccountController extends Controller
             })
             ->editColumn('name',function($item){
                 $url=url('crm/accounts/'.___encrypt($item['id']));
-                return '<a href="'.$url.'">'.$item['first_name'].'  '.$item['last_name'].'</a>';
+                return '<a href="'.$url.'">'.$item['name'].'</a>';
             })
              ->editColumn('email',function($item){
                 $url=url('crm/accounts/'.___encrypt($item['id']));
@@ -113,7 +113,10 @@ class AccountController extends Controller
      */
     public function create()
     {
-        $data['form']=_arefy(DynamicForm::where('module_type','account')->Orderby('id','desc')->get());
+        $data['account_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'account_information'])->Orderby('id','desc')->get());
+        $data['lead_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'lead_information'])->Orderby('id','desc')->get());
+        $data['callback_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'callback_information'])->Orderby('id','desc')->get());
+        $data['customer_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'customer_information'])->Orderby('id','desc')->get());
         $data['user_role']=_arefy(User::where('status','active')->Orderby('id','desc')->get());
         $data['account_status']=_arefy(AccountStatus::where('status','active')->Orderby('id','desc')->get());
         $data['lead_source']=_arefy(LeadSource::where('status','active')->Orderby('id','desc')->get());
@@ -140,6 +143,7 @@ class AccountController extends Controller
                 }else{
                     $id=0;
                 }
+                $data['name']=$request->name;
                 $data['first_name']=$request->first_name;
                 $data['last_name']=$request->last_name;
                 $data['customer_number']='ACCOUNT'.$id;
@@ -150,6 +154,23 @@ class AccountController extends Controller
                 $data['account_status']=$request->account_status;
                 $data['lead_source']=$request->lead_source;
                 $data['sales_agent']=$request->sales_agent;
+                $data['injury_type']=$request->injury_type;
+                $data['potential_defendant']=$request->potential_defendant;
+                $data['date_of_injury_aware']=$request->date_of_injury_aware;
+                $data['lead_quality']=$request->lead_quality;
+                $data['facebook_injury_date']=$request->facebook_injury_date;
+                $data['enquiry_type']=$request->enquiry_type;
+                $data['panel_refrence']=$request->panel_refrence;
+                $data['type_of_lead']=$request->type_of_lead;
+                $data['date_lead_recieved']=$request->date_lead_recieved;
+                $data['home_telephone_number']=$request->home_telephone_number;
+                $data['mobile_telephone_number']=$request->mobile_telephone_number;
+                $data['social_media_handle']=$request->social_media_handle;
+                $data['date_of_birth']=$request->date_of_birth;
+                $data['address']=$request->address;
+                $data['call_transfer_time']=$request->call_transfer_time;
+                $data['call_back_time']=$request->call_back_time;
+                $data['call_back_date']=$request->call_back_date;
                 $data['created_at']=date('Y-m-d H:i:s');
                 $data['updated_at']=date('Y-m-d H:i:s');
                 $add = Account::insertGetId($data);
@@ -205,8 +226,16 @@ class AccountController extends Controller
         $data['title'] = 'Account Edit';
         $data['create_title'] = 'Accounts';
         $data['view'] = 'crm.accounts.edit';
-        $data['form']=_arefy(DynamicForm::where('module_type','account')->Orderby('id','desc')->get());
+        /*$data['form']=_arefy(DynamicForm::where('module_type','account')->Orderby('id','desc')->get());*/
+        $data['account_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'account_information'])->Orderby('id','desc')->get());
+        $data['lead_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'lead_information'])->Orderby('id','desc')->get());
+        $data['callback_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'callback_information'])->Orderby('id','desc')->get());
+        $data['customer_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'customer_information'])->Orderby('id','desc')->get());
+
         $id = ___decrypt($id);
+         $data['user_role']=_arefy(User::where('status','active')->Orderby('id','desc')->get());
+        $data['account_status']=_arefy(AccountStatus::where('status','active')->Orderby('id','desc')->get());
+        $data['lead_source']=_arefy(LeadSource::where('status','active')->Orderby('id','desc')->get());
         $where='id='.$id;
         $data['account']  = _arefy(Account::list('single',$where));
         return view('crm.index',$data);
@@ -217,8 +246,15 @@ class AccountController extends Controller
         $data['title'] = 'Account Duplicate';
         $data['create_title'] = 'Accounts';
         $data['view'] = 'crm.accounts.duplicate';
-        $data['form']=_arefy(DynamicForm::where('module_type','account')->Orderby('id','desc')->get());
+         $data['account_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'account_information'])->Orderby('id','desc')->get());
+        $data['lead_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'lead_information'])->Orderby('id','desc')->get());
+        $data['callback_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'callback_information'])->Orderby('id','desc')->get());
+        $data['customer_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'customer_information'])->Orderby('id','desc')->get());
+
         $id = ___decrypt($id);
+         $data['user_role']=_arefy(User::where('status','active')->Orderby('id','desc')->get());
+        $data['account_status']=_arefy(AccountStatus::where('status','active')->Orderby('id','desc')->get());
+        $data['lead_source']=_arefy(LeadSource::where('status','active')->Orderby('id','desc')->get());
         $where='id='.$id;
         $data['account']  = _arefy(Account::list('single',$where));
         return view('crm.index',$data);
@@ -239,8 +275,10 @@ class AccountController extends Controller
             $this->message = $validator->errors();
         }else{
                 $id = ___decrypt($id);
+                $data['name']=$request->name;
                 $data['first_name']=$request->first_name;
                 $data['last_name']=$request->last_name;
+                //$data['customer_number']='ACCOUNT'.$id;
                 $data['lead_source']=$request->lead_source;
                 $data['mobile']=$request->mobile;
                 $data['date_of_injury']=$request->date_of_injury;
@@ -248,6 +286,23 @@ class AccountController extends Controller
                 $data['account_status']=$request->account_status;
                 $data['lead_source']=$request->lead_source;
                 $data['sales_agent']=$request->sales_agent;
+                $data['injury_type']=$request->injury_type;
+                $data['potential_defendant']=$request->potential_defendant;
+                $data['date_of_injury_aware']=$request->date_of_injury_aware;
+                $data['lead_quality']=$request->lead_quality;
+                $data['facebook_injury_date']=$request->facebook_injury_date;
+                $data['enquiry_type']=$request->enquiry_type;
+                $data['panel_refrence']=$request->panel_refrence;
+                $data['type_of_lead']=$request->type_of_lead;
+                $data['date_lead_recieved']=$request->date_lead_recieved;
+                $data['home_telephone_number']=$request->home_telephone_number;
+                $data['mobile_telephone_number']=$request->mobile_telephone_number;
+                $data['social_media_handle']=$request->social_media_handle;
+                $data['date_of_birth']=$request->date_of_birth;
+                $data['address']=$request->address;
+                $data['call_transfer_time']=$request->call_transfer_time;
+                $data['call_back_time']=$request->call_back_time;
+                $data['call_back_date']=$request->call_back_date;
                 $data['created_at']=date('Y-m-d H:i:s');
                 $data['updated_at']=date('Y-m-d H:i:s');
                 $add = Account::where('id',$id)->update($data);
@@ -301,10 +356,19 @@ class AccountController extends Controller
         return $this->populateresponse();
     }
 
-    public function AccountExportPDF(Request $request)
-  {
-        $data['account']  = _arefy(Account::whereIn('id', $request->accounts)->get());
-        $pdf = PDF::loadView('crm.accounts.export', $data);
+    public function AccountExportPDF(Request $request){
+        $whereIn=$request->accounts;
+        $data['account_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'account_information'])->Orderby('id','desc')->get());
+        $data['lead_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'lead_information'])->Orderby('id','desc')->get());
+        $data['callback_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'callback_information'])->Orderby('id','desc')->get());
+        $data['customer_info']=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'customer_information'])->Orderby('id','desc')->get());
+
+         $data['user_role']=_arefy(User::where('status','active')->Orderby('id','desc')->get());
+        $data['account_status']=_arefy(AccountStatus::where('status','active')->Orderby('id','desc')->get());
+        $data['lead_source']=_arefy(LeadSource::where('status','active')->Orderby('id','desc')->get());
+        $data['accounts']  =  _arefy(Account::list('array','',['*'],'id-desc',$whereIn));
+       // return view('crm.accounts.export',$data);
+        $pdf = PDF::loadView('crm.accounts.export',$data);
         $file=date('ymdhis');
         $pdf->save(public_path('uploads/account_export/').$file.'.pdf');
         if(!empty($request->email)){
@@ -327,7 +391,7 @@ class AccountController extends Controller
       
   }
 
-  public function mail(){
+    public function mail(){
         $data['title'] = 'Account Mail';
         $data['create_title'] = 'Accounts';
         $data['view'] = 'crm.common.mail';
@@ -344,11 +408,20 @@ class AccountController extends Controller
     }
 
     public function export(Request $request){
-        $account  = _arefy(Account::whereIn('id', $request->user)->get());
-        $template  = _arefy(\App\Models\Email::where('status', 'active')->orderBy('id','desc')->get());
+        $account_info=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'account_information'])->Orderby('id','desc')->get());
+        $lead_info=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'lead_information'])->Orderby('id','desc')->get());
+        $callback_info=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'callback_information'])->Orderby('id','desc')->get());
+        $customer_info=_arefy(DynamicForm::where(['module_type'=>'account','section_type'=>'customer_information'])->Orderby('id','desc')->get());
+        
+         $user_role=_arefy(User::where('status','active')->Orderby('id','desc')->get());
+        $account_status=_arefy(AccountStatus::where('status','active')->Orderby('id','desc')->get());
+        $lead_source=_arefy(LeadSource::where('status','active')->Orderby('id','desc')->get());
+        $whereIn=$request->user;
+        $accounts  = _arefy(Account::list('array','',['*'],'id-desc',$whereIn));
+        //pp($data['account']);
          return response()->json([
             'status'    => true,
-            'html'      => view("crm.common.export",['account'=>$account,'template'=>$template])->render()
+            'html'      => view("crm.common.export",['accounts'=>$accounts,'account_info,'=>$account_info,'lead_info,'=>$lead_info,'callback_info,'=>$callback_info,'customer_info,'=>$customer_info,'user_role,'=>$user_role,'account_status,'=>$account_status,'lead_source,'=>$lead_source,])->render()
         ]);
     }
 
@@ -393,6 +466,22 @@ class AccountController extends Controller
             fclose($file);
         };
         return Response::stream($callback, 200, $headers);
+    }
+
+    public function bulkDelete(Request $request){
+        $id=$request->user;
+        $data                   = ['status'=>'inactive','updated_at'=>date('Y-m-d H:i:s')];
+
+       //pp($id);
+        //dd($request->user);
+        $isUpdated          = Account::whereIn('ids',$request->user)->update($data);
+       
+        if($isUpdated){
+            $this->status       = true;
+            $this->redirect     = url('crm/accounts');
+            $this->jsondata     = [];
+        }
+        return $this->populateresponse();
     }
   
 }

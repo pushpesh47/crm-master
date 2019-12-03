@@ -2,6 +2,8 @@
     use Illuminate\Support\Facades\Mail;
     
     use Perks\Helpers\Common;
+    define('DEFAULT_COUNTRY_CODE','+91');
+    define('DEFAULT_TIMEZONE','Europe/London');
     function ___alert($alert){
         if(empty($alert)){  
             if(Session::has('alert')){

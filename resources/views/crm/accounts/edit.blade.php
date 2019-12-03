@@ -9,8 +9,8 @@
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search for...">
             <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                  </span>
+                <button class="btn btn-default" type="button">Go!</button>
+            </span>
           </div>
         </div>
       </div>
@@ -36,82 +36,116 @@
             </ul>
             <div class="clearfix"></div>
           </div>
-          <div class="x_content">
             <form class="form-horizontal" role="add-account" method="POST" action="{{url('crm/accounts/'.___encrypt($account['id']))}}">
-             <input type="hidden" name="_method" value="PUT">
-            <input type="hidden" name="id" value="{{$account['id']}}">
-              <span class="section">Personal Info</span>
+              <input type="hidden" name="_method" value="PUT">
+              <input type="hidden" name="id" value="{{$account['id']}}">
+              <div class="x_content">
+              <div class="col-md-12 col-sm-12">
+                <span class="section">Account Information</span>
+              </div>
               <div class="col-md-6 col-sm-6">
                 <div class="item form-group">
-                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">First Name<span class="required">*</span>
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Customer Name<span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6">
-                    <input id="name" class="form-control" data-validate-length-range="6" data-validate-words="2" value="{{$account['first_name']}}" name="first_name" placeholder="First Name"  type="text">
-                  </div>
-                </div>
-                <div class="item form-group">
-                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Last Name<span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6">
-                    <input id="name" class="form-control" data-validate-length-range="6" data-validate-words="2" value="{{$account['last_name']}}" name="last_name" placeholder="Last Name"  type="text">
+                    <input id="name" class="form-control" value="{{$account['name']}}" name="name" placeholder="Customer Name"  type="text">
                   </div>
                 </div>
                 <div class="item form-group">
                   <label class="col-form-label col-md-3 col-sm-3 label-align" placeholder="Cutomer No." for="email">Customer No  <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6">
-                    <input type="text" value="{{$account['customer_number']}}"placeholder="Cutomer No." disabled="" required="required" class="form-control">
+                    <input type="text" disabled="" placeholder="Cutomer No." value="{{$account['customer_number']}}" required="required" class="form-control">
                   </div>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6">
-              <div class="item form-group">
-                <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Lead Source <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6">
-                 <select class="form-control" name="lead_source">
-                   <option @if($account['sales_agent']=='facebook') selected="" @endif value="facebook">Facebook</option>
-                   <option @if($account['sales_agent']=='google') selected="" @endif value="google">Google Adword</option>
-                   <option @if($account['sales_agent']=='bing') selected="" @endif value="bing">Bing</option>
-                 </select>
+                <div class="item form-group">
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Lead Source <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6">
+                    <select class="form-control" name="lead_source">
+                      <option value="">Select Lead Source</option>
+                      @if(!empty($lead_source))
+                        @foreach($lead_source as $value)
+                          <option @if($account['lead_source']==$value['lead_source']) selected="" @endif value="{{$value['lead_source']}}">{{ucfirst($value['lead_source'])}}</option>
+                        @endforeach
+                      @endif
+                    </select>
+                  </div>
+                </div>
+                <div class="item form-group">
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Enquiry Type <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6">
+                    <select class="form-control" name="enquiry_type">
+                      <option value="">Select Enquiry Type</option>
+                      <option value="email">Email</option>
+                      <option value="phone">Phone</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div class="item form-group">
-                <label class="col-form-label col-md-3 col-sm-3 label-align" for="number">Mobile Number<span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6">
-                  <input type="text" id="number" value="{{$account['mobile']}}" placeholder="Mobile Number" name="mobile" required="required"  class="form-control">
-                </div>
-              </div>
-            </div>
             <div class="col-md-6 col-sm-6">
               <div class="item form-group">
-                <label class="col-form-label col-md-3 col-sm-3 label-align" for="website">Date of Injury or Negligence<span class="required">*</span>
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="number">Call trasnsfer Time<span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6">
-                  <input type="date"  name="date_of_injury"  value="{{$account['date_of_injury']}}" placeholder="dd-mm-yyyy" class="form-control">
-                </div>
-              </div>
-              
-            </div>
-            
-            <div class="col-md-6 col-sm-6">
-              <div class="item form-group">
-                <label class="col-form-label col-md-3 col-sm-3 label-align" >Email <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6">
-                  <input type="text" id="telephone" name="email"   value="{{$account['email']}}" placeholder="Email" class="form-control">
+                  <input type="time" id="call_transfer_time" placeholder="Call trasnsfer Time" value="{{$account['call_transfer_time']}}" name="call_transfer_time" required="required"  class="form-control">
                 </div>
               </div>
               <div class="item form-group">
-                <label class="col-form-label col-md-3 col-sm-3 label-align" for="textarea">Account Status  <span class="required">*</span>
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="textarea">Account Status<span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6">
                  <select class="form-control" name="account_status">
-                   <option @if($account['account_status']=='new') selected="" @endif value="new">New</option>
-                   <option @if($account['account_status']=='passed') selected="" @endif value="passed">Passed</option>
-                   <option @if($account['account_status']=='declined') selected="" @endif value="declined">Declined</option>
+                  <option value="">Select Account Status</option>
+                    @if(!empty($account_status))
+                    @foreach($account_status as $value)
+                      <option @if($account['account_status']==$value['account_status']) selected="" @endif value="{{$value['account_status']}}">{{ucfirst($value['account_status'])}}</option>
+                    @endforeach
+                  @endif
                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="number">Primary Phone Number<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="text" id="number" placeholder="Primary Phone Number" name="mobile" value="{{$account['mobile']}}" required="required"  class="form-control">
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Panel Refrence<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                 <select class="form-control" name="panel_refrence">
+                      <option value="">Select Panel Refrence</option>
+                      <option value="email">Email</option>
+                      <option value="phone">Phone</option>
+                 </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Type Of Lead<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                 <select class="form-control" name="type_of_lead">
+                       <option value="">Select Type Of Lead</option>
+                      <option value="email">Email</option>
+                      <option value="phone">Phone</option>
+                 </select>
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="number">Date of Lead Recieved<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="date" id="date_lead_recieved" placeholder="Date of Lead Recieved" value="{{___d($account['date_lead_recieved'],'Y-m-d')}}" name="date_lead_recieved" required="required"  class="form-control">
                 </div>
               </div>
             </div>
@@ -121,53 +155,58 @@
                 </label>
                 <div class="col-md-6 col-sm-6">
                  <select class="form-control" name="sales_agent">
-                   <option @if($account['sales_agent']=='admin') selected="" @endif value="admin">Admin</option>
-                   <option @if($account['sales_agent']=='kaif') selected="" @endif value="kaif">Kaif</option>
-                   <option @if($account['sales_agent']=='varun') selected="" @endif value="varun">varun</option>
+                  <option value="">Select Agent</option>
+                   @if(!empty($user_role))
+                    @foreach($user_role as $value)
+                      <option @if($value['id']==$account['sales_agent']) selected=""  @endif value="{{$value['id']}}">{{ucfirst($value['first_name'].' '.$value['last_name'])}}</option>
+                    @endforeach
+                  @endif
                  </select>
                 </div>
               </div>
-            </div>
+              </div>
               @php $myfromnae=[]; $i=0; @endphp
-              @if(!empty($account['account_more']))
-              
+                @if(!empty($account['account_more']))
+
                 @foreach($account['account_more'] as $forms)
-            <div class="col-md-6 col-sm-6">
-                
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['form_details']['field_label']}}">{{ucfirst($forms['form_details']['field_label'])}}<span class="required"></span>
-                    </label>
-                    <div class="col-md-6 col-sm-6">
-                    @if($forms['form_details']['field_type']=='text')
+                @if($forms['form_details']['section_type']=='account_information')
+                <div class="col-md-6 col-sm-6">
 
-                    <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}} "  value="{{$forms['value']}}" class="form-control {{$forms['form_details']['field_name']}}">
+                <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['form_details']['field_label']}}">{{ucfirst($forms['form_details']['field_label'])}}<span class="required"></span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                @if($forms['form_details']['field_type']=='text')
 
-                    @elseif($forms['form_details']['field_type']=='textarea')
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}} "  value="{{$forms['value']}}" class="form-control {{$forms['form_details']['field_name']}}">
 
-                      <textarea  name="cf[{{$forms['form_details']['field_name']}}]"  id="{{$forms['form_details']['field_name']}}" placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">{{$forms['value']}}</textarea>
+                @elseif($forms['form_details']['field_type']=='textarea')
 
-                    @elseif($forms['form_details']['field_type']=='file')
+                <textarea  name="cf[{{$forms['form_details']['field_name']}}]"  id="{{$forms['form_details']['field_name']}}" placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">{{$forms['value']}}</textarea>
 
-                      <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">
+                @elseif($forms['form_details']['field_type']=='file')
 
-                    @elseif($forms['form_details']['field_type']=='select')
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">
 
-                      <select class="form-control {{$forms['form_details']['field_name']}}" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]">
-                        <option @if($forms['value']=='admin') selected="" @endif value="admin">Admin</option>
-                        <option @if($forms['value']=='kaif') selected="" @endif value="kaif">kaif</option>
-                        <option @if($forms['value']=='varun') selected="" @endif value="varun">Varun</option>
-                      </select>
+                @elseif($forms['form_details']['field_type']=='select')
 
-                    @endif
-                    </div>
-                  </div>
-                   </div>
-                  @php  $myfromnae[]=$forms['form_details']['field_name']; $i++; @endphp
+                <select class="form-control {{$forms['form_details']['field_name']}}" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]">
+                <option @if($forms['value']=='admin') selected="" @endif value="admin">Admin</option>
+                <option @if($forms['value']=='kaif') selected="" @endif value="kaif">kaif</option>
+                <option @if($forms['value']=='varun') selected="" @endif value="varun">Varun</option>
+                </select>
+
+                @endif
+                </div>
+                </div>
+                </div>
+                @php  $myfromnae[]=$forms['form_details']['field_name']; $i++; @endphp
+                @endif
                 @endforeach
                 @endif
-             
-               @if(!empty($form))
-                @foreach($form as $forms)
+
+                @if(!empty($account_info))
+                @foreach($account_info as $forms)
                 @if(!in_array($forms['field_name'],$myfromnae))
                 <div class="col-md-6 col-sm-6">
                   <div class="item form-group">
@@ -200,8 +239,389 @@
                 </div>
                 @endif
                 @endforeach
-              @endif
+                @endif
             </div>
+
+            <div class="x_content">
+            <div class="col-md-12 col-sm-12">
+              <span class="section">Lead Information</span>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="website">Type Of Injury<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <textarea name="injury_type">{{$account['injury_type']}}</textarea>
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="website">Date of Injury or Negligence<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="date"  value="{{___d($account['date_of_injury'],'Y-m-d')}}" name="date_of_injury"  placeholder="dd-mm-yyyy" class="form-control">
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="website">Potential Defendant<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <textarea name="potential_defendant">{{$account['potential_defendant']}}</textarea>
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="website">Date Client Became Aware of Injury/Negligence<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="date"  value="{{___d($account['date_of_injury_aware'],'Y-m-d')}}" name="date_of_injury_aware"  placeholder="dd-mm-yyyy" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+             <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="textarea">Lead Quality<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                 <select class="form-control" name="lead_quality">
+                      <option @if($account['lead_quality']=='high') selected="" @endif value="high">High</option>
+                      <option @if($account['lead_quality']=='low') selected="" @endif value="low">Low</option>
+                    
+                 </select>
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="website">Facebook Injury Date<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="date"  value="{{___d($account['facebook_injury_date'],'Y-m-d')}}" name="facebook_injury_date"  placeholder="dd-mm-yyyy" class="form-control">
+                </div>
+              </div>
+            </div>
+              @php $myfromnae=[]; $i=0; @endphp
+                @if(!empty($account['account_more']))
+
+                @foreach($account['account_more'] as $forms)
+                 @if($forms['form_details']['section_type']=='lead_information')
+                <div class="col-md-6 col-sm-6">
+
+                <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['form_details']['field_label']}}">{{ucfirst($forms['form_details']['field_label'])}}<span class="required"></span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                @if($forms['form_details']['field_type']=='text')
+
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}} "  value="{{$forms['value']}}" class="form-control {{$forms['form_details']['field_name']}}">
+
+                @elseif($forms['form_details']['field_type']=='textarea')
+
+                <textarea  name="cf[{{$forms['form_details']['field_name']}}]"  id="{{$forms['form_details']['field_name']}}" placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">{{$forms['value']}}</textarea>
+
+                @elseif($forms['form_details']['field_type']=='file')
+
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">
+
+                @elseif($forms['form_details']['field_type']=='select')
+
+                <select class="form-control {{$forms['form_details']['field_name']}}" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]">
+                <option @if($forms['value']=='admin') selected="" @endif value="admin">Admin</option>
+                <option @if($forms['value']=='kaif') selected="" @endif value="kaif">kaif</option>
+                <option @if($forms['value']=='varun') selected="" @endif value="varun">Varun</option>
+                </select>
+
+                @endif
+                </div>
+                </div>
+                </div>
+                @php  $myfromnae[]=$forms['form_details']['field_name']; $i++; @endphp
+                @endif
+                @endforeach
+                @endif
+
+                @if(!empty($lead_info))
+                @foreach($lead_info as $forms)
+                @if(!in_array($forms['field_name'],$myfromnae))
+                <div class="col-md-6 col-sm-6">
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['field_label']}}">{{ucfirst($forms['field_label'])}}<span class="required"></span>
+                    </label>
+                    <div class="col-md-6 col-sm-6">
+                    @if($forms['field_type']=='text')
+
+                    <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}} " class="form-control {{$forms['field_name']}}">
+
+                    @elseif($forms['field_type']=='textarea')
+
+                      <textarea  name="cf[{{$forms['field_name']}}]"  id="{{$forms['field_name']}}" placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}"></textarea>
+
+                    @elseif($forms['field_type']=='file')
+
+                      <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}">
+
+                    @elseif($forms['field_type']=='select')
+
+                      <select class="form-control {{$forms['field_name']}}" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]">
+                        <option value="admin">Admin</option>
+                        <option value="kaif">kaif</option>
+                        <option value="varun">Varun</option>
+                      </select>
+
+                    @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @endforeach
+                @endif
+            <div class="ln_solid"></div>
+            </div>
+            <div class="x_content">
+              <div class="col-md-12 col-sm-12">
+                <span class="section">Callback Information</span>
+              </div>
+                <div class="col-md-6 col-sm-6">
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Call back Time<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6">
+                      <input id="name" class="form-control"  value="{{$account['call_back_time']}}" name="call_back_time" placeholder="Call back Time"  type="time">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Call Back Date<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6">
+                      <input id="name" class="form-control" value="{{$account['call_back_date']}}" name="call_back_date" placeholder="Call Back Date"  type="date">
+                    </div>
+                  </div>
+                </div>
+              @php $myfromnae=[]; $i=0; @endphp
+                @if(!empty($account['account_more']))
+
+                @foreach($account['account_more'] as $forms)
+                 @if($forms['form_details']['section_type']=='callback_information')
+                <div class="col-md-6 col-sm-6">
+
+                <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['form_details']['field_label']}}">{{ucfirst($forms['form_details']['field_label'])}}<span class="required"></span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                @if($forms['form_details']['field_type']=='text')
+
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}} "  value="{{$forms['value']}}" class="form-control {{$forms['form_details']['field_name']}}">
+
+                @elseif($forms['form_details']['field_type']=='textarea')
+
+                <textarea  name="cf[{{$forms['form_details']['field_name']}}]"  id="{{$forms['form_details']['field_name']}}" placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">{{$forms['value']}}</textarea>
+
+                @elseif($forms['form_details']['field_type']=='file')
+
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">
+
+                @elseif($forms['form_details']['field_type']=='select')
+
+                <select class="form-control {{$forms['form_details']['field_name']}}" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]">
+                <option @if($forms['value']=='admin') selected="" @endif value="admin">Admin</option>
+                <option @if($forms['value']=='kaif') selected="" @endif value="kaif">kaif</option>
+                <option @if($forms['value']=='varun') selected="" @endif value="varun">Varun</option>
+                </select>
+
+                @endif
+                </div>
+                </div>
+                </div>
+                @php  $myfromnae[]=$forms['form_details']['field_name']; $i++; @endphp
+                @endif
+                @endforeach
+                @endif
+
+                @if(!empty($callback_info))
+                @foreach($callback_info as $forms)
+                @if(!in_array($forms['field_name'],$myfromnae))
+                <div class="col-md-6 col-sm-6">
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['field_label']}}">{{ucfirst($forms['field_label'])}}<span class="required"></span>
+                    </label>
+                    <div class="col-md-6 col-sm-6">
+                    @if($forms['field_type']=='text')
+
+                    <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}} " class="form-control {{$forms['field_name']}}">
+
+                    @elseif($forms['field_type']=='textarea')
+
+                      <textarea  name="cf[{{$forms['field_name']}}]"  id="{{$forms['field_name']}}" placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}"></textarea>
+
+                    @elseif($forms['field_type']=='file')
+
+                      <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}">
+
+                    @elseif($forms['field_type']=='select')
+
+                      <select class="form-control {{$forms['field_name']}}" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]">
+                        <option value="admin">Admin</option>
+                        <option value="kaif">kaif</option>
+                        <option value="varun">Varun</option>
+                      </select>
+
+                    @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @endforeach
+                @endif
+
+              <div class="ln_solid"></div>
+            </div>
+            <div class="x_content">
+            <div class="col-md-12 col-sm-12">
+              <span class="section">Customer Information</span>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">First Name<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input id="name" class="form-control" value="{{$account['first_name']}}" name="first_name" placeholder="First Name"  type="text">
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Surname<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input id="name" class="form-control" value="{{$account['last_name']}}" name="last_name" placeholder="Surname"  type="text">
+                </div>
+              </div>
+              
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Home Telephone Number <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="text" id="telephone" value="{{$account['home_telephone_number']}}" name="home_telephone_number"   placeholder="Home Telephone Number" class="form-control">
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Mobile Telephone Number <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="text" id="telephone" value="{{$account['mobile_telephone_number']}}" name="mobile_telephone_number"   placeholder="Mobile Telephone Number" class="form-control">
+                </div>
+              </div>
+              
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Social Media handle <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="text"  value="{{$account['social_media_handle']}}" name="social_media_handle"   placeholder="Social Media handle" class="form-control">
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Email <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="text" id="email" value="{{$account['email']}}" name="email"   placeholder="Email" class="form-control">
+                </div>
+              </div>
+              
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Date Of Birth <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <input type="date" id="date_of_birth" value="{{___d($account['date_of_birth'],'Y-m-d')}}" name="date_of_birth"   placeholder="Date Of Birth" class="form-control">
+                </div>
+              </div>
+              <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" >Address, City, Postcode <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                  <textarea type="text" id="telephone" name="address"   placeholder="Address, City, Postcode" class="form-control">{{$account['address']}}</textarea> 
+                </div>
+              </div>
+            </div>
+                @php $myfromnae=[]; $i=0; @endphp
+                @if(!empty($account['account_more']))
+
+                @foreach($account['account_more'] as $forms)
+                 @if($forms['form_details']['section_type']=='customer_information')
+                <div class="col-md-6 col-sm-6">
+
+                <div class="item form-group">
+                <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['form_details']['field_label']}}">{{ucfirst($forms['form_details']['field_label'])}}<span class="required"></span>
+                </label>
+                <div class="col-md-6 col-sm-6">
+                @if($forms['form_details']['field_type']=='text')
+
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}} "  value="{{$forms['value']}}" class="form-control {{$forms['form_details']['field_name']}}">
+
+                @elseif($forms['form_details']['field_type']=='textarea')
+
+                <textarea  name="cf[{{$forms['form_details']['field_name']}}]"  id="{{$forms['form_details']['field_name']}}" placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">{{$forms['value']}}</textarea>
+
+                @elseif($forms['form_details']['field_type']=='file')
+
+                <input type="text" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]"   placeholder="{{$forms['form_details']['field_label']}}" class="form-control {{$forms['form_details']['field_name']}}">
+
+                @elseif($forms['form_details']['field_type']=='select')
+
+                <select class="form-control {{$forms['form_details']['field_name']}}" id="{{$forms['form_details']['field_name']}}" name="cf[{{$forms['form_details']['field_name']}}]">
+                <option @if($forms['value']=='admin') selected="" @endif value="admin">Admin</option>
+                <option @if($forms['value']=='kaif') selected="" @endif value="kaif">kaif</option>
+                <option @if($forms['value']=='varun') selected="" @endif value="varun">Varun</option>
+                </select>
+
+                @endif
+                </div>
+                </div>
+                </div>
+                @php  $myfromnae[]=$forms['form_details']['field_name']; $i++; @endphp
+                @endif
+                @endforeach
+                @endif
+
+                @if(!empty($customer_info))
+                @foreach($customer_info as $forms)
+                @if(!in_array($forms['field_name'],$myfromnae))
+                <div class="col-md-6 col-sm-6">
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="{{$forms['field_label']}}">{{ucfirst($forms['field_label'])}}<span class="required"></span>
+                    </label>
+                    <div class="col-md-6 col-sm-6">
+                    @if($forms['field_type']=='text')
+
+                    <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}} " class="form-control {{$forms['field_name']}}">
+
+                    @elseif($forms['field_type']=='textarea')
+
+                      <textarea  name="cf[{{$forms['field_name']}}]"  id="{{$forms['field_name']}}" placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}"></textarea>
+
+                    @elseif($forms['field_type']=='file')
+
+                      <input type="text" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]"   placeholder="{{$forms['field_label']}}" class="form-control {{$forms['field_name']}}">
+
+                    @elseif($forms['field_type']=='select')
+
+                      <select class="form-control {{$forms['field_name']}}" id="{{$forms['field_name']}}" name="cf[{{$forms['field_name']}}]">
+                        <option value="admin">Admin</option>
+                        <option value="kaif">kaif</option>
+                        <option value="varun">Varun</option>
+                      </select>
+
+                    @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @endforeach
+                @endif
               <div class="ln_solid"></div>
               <div class="form-group">
                 <div class="col-md-6 offset-md-3">
