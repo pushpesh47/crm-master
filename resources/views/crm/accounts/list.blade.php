@@ -1,7 +1,7 @@
 <div class="right_col" role="main">
         <div class="">
   <div class="page-title">
-    <div class="title_left">
+    <!-- <div class="title_left">
       <h6>Search</h6>
       <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
       <div id="demo" class="collapse">
@@ -10,7 +10,7 @@
         Lorem ipsum dolor text....
         Lorem ipsum dolor text....
       </div>
-    </div>
+    </div> -->
     <div class="title_right">
       <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
         <div class="input-group">
@@ -26,26 +26,62 @@
 <div class="clearfix"></div>
 <div class="row filter">
 <div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-4">
+    <input type="text" placeholder="Search..." name="search" class="form-control" >
+  </div>
+  <div class="col-sm-4">
+    <select name="search_column" class="form-control">
+      @if(!empty($viewColumn))
+        @foreach($viewColumn as $viewCol)
+          <option value="{{$viewCol['meta_value']}}">{{$viewCol['meta_name']}}</option>
+        @endforeach
+      @endif
+      <option value="">customer name</option>
+    </select>
+  </div>
+  <div class="col-sm-2">
+  </div>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
     <div class="col-sm-4">
-        <form>
+        <form >
            <div class="form-group row">
               <label for="staticEmail" class="col-sm-2 col-form-label">Filter:</label>
               <div class="col-sm-10">
-                <select class="form-control">
-                <option>Select Filter</option>
+                <select  data-url="{{url('crm/accounts')}}" data-target="#filterAction"  data-id="as" data-type="accounts" data-request="ajax-get-form-change" class="form-control" name="filter" id="filter">
+                  <option value="all">All</option>
+                 
+                @if(!empty($filter))
+                  @foreach($filter as $filters)
+                  @if(!empty($_REQUEST['filter']))
+                    <option  @if($_REQUEST['filter']==___encrypt($filters['id'])) selected="" @endif value="{{___encrypt($filters['id'])}}">{{$filters['view_name']}}</option>
+                  @else
+                    <option value="{{___encrypt($filters['id'])}}">{{$filters['view_name']}}</option>
+                  @endif
+                  @endforeach
+                @endif
               </select>
               </div>
             </div>
         </form>
     </div>
-    <div class="col-sm-4">
+    <div id="filterAction">
+      <div class="col-sm-4">
        <div class="form-group row">
-                <ul>
-                    <li><a href="{{url('crm/filter')}}">Create |</a></li>
-                    <li><a href="">Edit |</a></li>
-                    <li><a href="">Delete</a></li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="{{url('crm/filter/create')}}">Create |</a></li>
+                @if(!empty($_REQUEST['filter']) && $_REQUEST['filter']!='all')
+                  <li><a href="{{url('crm/filter/'.$_REQUEST['filter'].'/edit')}}">Edit |</a></li>
+                  <li><a href="{{url('crm/filter/'.$_REQUEST['filter'].'/delete')}}">Delete</a></li>
+                @else
+                  <li><a href="javascript:void(0)">Edit |</a></li>
+                  <li><a href="javascript:void(0)">Delete</a></li>
+                @endif
+            </ul>
+        </div>
+      </div>
     </div>
     <div class="col-sm-4"></div>
 </div>
@@ -104,8 +140,6 @@
       $('#checkedAll').prop('checked', false);
     }
   });
-
-   
   
 </script>
 @endsection

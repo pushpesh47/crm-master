@@ -36,29 +36,29 @@ form h2
 <div class="right_col" role="main">
   <div class="container">
     
-      <form method="POST" action="{{url('crm/filter')}}" role="create-filter">
-
+      <form method="POST" action="{{url('crm/filter/'.___encrypt($filter['id']))}}" role="create-filter">
+        <input type="hidden" name="_method" value="PUT">
         <!------------Details--->
         <h2>Details</h2>
             <div class="form-row">
               <div class="col-sm-4 my-1">
-                <input type="text" class="form-control" placeholder="View name" name="view_name">
+                <input type="text" value="{{$filter['view_name']}}" class="form-control" placeholder="View name" name="view_name">
               </div>
                <div class="col-sm-2 my-1">
                 <div class=" mr-sm-2">
-                  <input type="checkbox" name="set_as_default" >
+                  <input type="checkbox" @if($filter['set_as_default']=='on') checked="" @endif name="set_as_default" >
                   <label class="-label" for="customControlAutosizing">Set as Default</label>
                 </div>
               </div>
                <div class="col-sm-2 my-1">
                 <div class=" mr-sm-2">
-                  <input type="checkbox" name="list_in_metrics" >
+                  <input type="checkbox" @if($filter['list_in_metrics']=='on') checked="" @endif name="list_in_metrics" >
                   <label class="-label" for="customControlAutosizing">List in Matrix</label>
                 </div>
               </div>
                <div class="col-auto my-1">
                 <div class=" mr-sm-2">
-                  <input type="checkbox" name="set_as_public" >
+                  <input type="checkbox" @if($filter['set_as_public']=='on') checked="" @endif name="set_as_public" >
                   <label class="-label" for="customControlAutosizing">Set as public</label>
                 </div>
               </div>
@@ -67,23 +67,24 @@ form h2
              <h2>Choose columns</h2>
             <div class="form-row">
               <div class="col-sm-3 my-1">
+                       
                   <select id="inputState" class="form-control option" name="column[column_name1]">
-                    @includeif('crm.accounts._common_field_list');
+                      @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name1']);
                   </select>
               </div>
                 <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name2]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name2']);
                   </select>
               </div>
                <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name3]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name3']);
                   </select>
               </div>
                <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name4]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name4']);
                   </select>
               </div>
             </div>
@@ -92,22 +93,22 @@ form h2
              <div class="form-row">
               <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name5]">
-                    @includeif('crm.accounts._common_field_list');
+                   @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name5']);
                   </select>
               </div>
                 <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name6]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name6']);
                   </select>
               </div>
                <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name7]">
-                    @includeif('crm.accounts._common_field_list');
+                   @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name7']);
                   </select>
               </div>
                <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name8]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name8']);
                   </select>
               </div>
             </div>
@@ -115,7 +116,7 @@ form h2
               <div class="form-row">
               <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name9]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name9']);
                   </select>
               </div>
             </div>
@@ -141,7 +142,7 @@ form h2
                        </div>
                         <div class="col-sm-10 my-1">
                             <select id="inputState" class="form-control option" name="column[column_name10]">
-                              @includeif('crm.accounts._common_field_list');
+                             @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name10']);
                             </select>
                         </div>
 
@@ -152,7 +153,7 @@ form h2
                        </div>
                         <div class="col-sm-10 my-1">
                             <select id="inputState" class="form-control option" name="column[column_name11]">
-                              @includeif('crm.accounts._common_field_list');
+                              @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name11']);
                             </select>
                         </div>
 
@@ -186,17 +187,17 @@ form h2
                     <div class="form-row">
               <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name12]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name12']);
                   </select>
               </div>
                 <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name13]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name13']);
                   </select>
               </div>
                <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name14]">
-                    @includeif('crm.accounts._common_field_list');
+                    @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name14']);
                   </select>
               </div>
                <div class="col-sm-3 my-1">
@@ -220,7 +221,7 @@ form h2
   </div>
 </div>
 @section('requirejs')
-  <!-- <script type="text/javascript">
+  <script type="text/javascript">
     $('#home-tab-just').click(function(){
       $('#home-just').show();
       $('#profile-just').hide();
@@ -229,5 +230,5 @@ form h2
       $('#profile-just').show();
       $('#home-just').hide();
     });
-  </script> -->
+  </script>
 @endsection

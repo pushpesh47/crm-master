@@ -17,7 +17,8 @@ use Yajra\DataTables\Html\Builder;
 use Validations\Admin\Validate as Validations;
 use PDF;
 use Excel;
-
+use App\Models\FilterView;
+use App\Models\FilterViewDetail;
 class AccountController extends Controller
 {
     /**
@@ -34,10 +35,14 @@ class AccountController extends Controller
 
     public function index(Request $request,Builder $builder)
     {
+        if(!empty($_REQUEST['filter']) && !empty($_REQUEST['module'])){
+            $view_id = ___decrypt($_REQUEST['filter']);
+            $data['viewColumn']=_arefy(FilterViewDetail::where(['filter_view_id'=>$view_id])->where('meta_value','!=',NULL)->get());
+        }
         $data['title'] = 'Account List';
         $data['create_title'] = 'Accounts';
         $data['view'] = 'crm.accounts.list';
-        //$exam  = _arefy(Account::orderBy('id','desc')->get());
+        $data['filter']  = _arefy(FilterView::orderBy('id','desc')->where('status','active')->get());
         $check ='<input type="checkbox" name="accountAll" id="checkedAll" >';
         $account= _arefy(Account::list('array'));
         if ($request->ajax()) {
@@ -471,10 +476,7 @@ class AccountController extends Controller
     public function bulkDelete(Request $request){
         $id=$request->user;
         $data                   = ['status'=>'inactive','updated_at'=>date('Y-m-d H:i:s')];
-
-       //pp($id);
-        //dd($request->user);
-        $isUpdated          = Account::whereIn('ids',$request->user)->update($data);
+        $isUpdated          = Account::whereIn('id',$request->user)->update($data);
        
         if($isUpdated){
             $this->status       = true;

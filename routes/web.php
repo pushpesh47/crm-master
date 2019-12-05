@@ -58,7 +58,8 @@
 		Route::get('accounts/{id}/duplicate','AccountController@duplicate');
 		Route::resource('/accounts','AccountController');
 
-		Route::get('/filter','FilterController@createFilter');
+		Route::get('/filter/{id}/delete','FilterController@destroy');
+		Route::resource('/filter','FilterController');
 
 		Route::post('form-module/status','FormModuleController@changeStatus');
 		Route::resource('/form-module','FormModuleController');

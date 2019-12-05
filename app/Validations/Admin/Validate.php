@@ -573,5 +573,13 @@ class Validate
     	$validator = \Validator::make($this->data->all(), $validations,[]);
 		return $validator;
 	}
+	public function addFilter($action="add")
+	{
+		$validations = [
+			'view_name'					=> $this->validation('name'),
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
 	
 }

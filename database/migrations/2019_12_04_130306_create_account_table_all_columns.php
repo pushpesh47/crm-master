@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FilterTable extends Migration
+class CreateAccountTableAllColumns extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class FilterTable extends Migration
      */
     public function up()
     {
-        Schema::create('filter_views', function (Blueprint $table) {
+        Schema::create('columns', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('view_name')->nullable();
-            $table->string('set_as_default')->nullable();
-            $table->string('list_in_metrics')->nullable();
-            $table->string('set_as_public')->nullable();
-            $table->string('module_type')->nullable();
-            $table->enum('filter_type',['standard','advance'])->default('standard');
+            $table->string('meta_key');
+            $table->string('meta_value');
+            $table->string('module_type');
             $table->enum('status',['active','inactive','pending'])->default('active');
             $table->timestamps();
         });
@@ -33,6 +30,6 @@ class FilterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('filter_views');
+        Schema::dropIfExists('columns');
     }
 }

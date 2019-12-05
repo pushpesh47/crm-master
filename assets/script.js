@@ -252,7 +252,31 @@ $(document).on('keypress keyup','[data-request="isnumeric"]', function(event){
     });
 });
 
-
+$(document).on('change','[data-request="ajax-get-form-change"]',function(){
+    var $this           = $(this);
+    var $formData       = new FormData();
+    var $values         = $this.val();
+    var $type           = $this.data('type');
+    var $id             = $this.data('id');
+    var $target         = $this.data('target');
+    var $url            = $this.data('url');
+    window.location.href=$url+'?filter='+$values+'&module='+$type;
+   /* $formData.append('filter',$values);
+    $.ajax({
+        url:$url,
+        type:'POST',
+        data:$formData,
+        dataType:'JSON',
+        processData:false,
+        contentType:false,
+        success:function($response){
+            if($response.status == true){
+               $($target).html($response.html);
+                $('#popup').hide();
+            }
+        }
+    });*/
+});
 
 
 /*var selectStyle = function(){
