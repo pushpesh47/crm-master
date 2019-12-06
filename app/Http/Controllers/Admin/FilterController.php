@@ -26,6 +26,10 @@ class FilterController extends Controller
         	$data['set_as_default']=$request->set_as_default;
         	$data['set_as_public']=$request->set_as_public;
         	$data['list_in_metrics']=$request->list_in_metrics;
+        	$data['column_from']=$request->column_from;
+        	$data['column_days']=$request->column_days;
+        	$data['start_date']=$request->start_date;
+        	$data['end_date']=$request->end_date;
         	$data['module_type']='accounts';
         	$data['filter_type']='advance';
         	$data['status']='active';
@@ -66,6 +70,11 @@ class FilterController extends Controller
         	$data['set_as_default']=$request->set_as_default;
         	$data['set_as_public']=$request->set_as_public;
         	$data['list_in_metrics']=$request->list_in_metrics;
+
+        	$data['column_from']=$request->column_from;
+        	$data['column_days']=$request->column_days;
+        	$data['start_date']=$request->start_date;
+        	$data['end_date']=$request->end_date;
         	$data['module_type']='accounts';
         	$data['filter_type']='advance';
         	$data['status']='active';

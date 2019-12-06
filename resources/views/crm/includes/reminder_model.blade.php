@@ -16,9 +16,21 @@
         <h4 class="modal-title">Call Reminder</h4>
       </div>
       <div class="modal-body">
-       @foreach($val as $account)
-          <p><a href="{{url('crm/accounts/'.___encrypt($account['id']))}}">{{$account['name']}}</a></p>
-        @endforeach
+        <table style="width:100%">
+          <tr>
+            <th>Customer Name</th>
+            <th>Mobile</th>
+            <th>Call Back Date and time</th>
+          </tr>
+           @foreach($val as $account)
+              <tr>
+                <td><a href="{{url('crm/accounts/'.___encrypt($account['id']))}}">{{$account['name']}}</a></td>
+                <td>{{$account['mobile']}}</td>
+                <td>{{$account['call_back_date']}},{{$account['call_back_time']}}</td>
+              </tr>
+              <tr>
+            @endforeach
+          </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

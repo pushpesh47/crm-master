@@ -141,21 +141,51 @@ form h2
                             <label>Select a Column</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                            <select id="inputState" class="form-control option" name="column[column_name10]">
-                             @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name10']);
+                            <select id="inputState" class="form-control option" name="column_from">
+                            <!--  @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name10']); -->
+                            <option value="date_of_injury">Date Of Injury</option>
+                            <option value="date_of_injury">Date Lead Recieved</option>
+                            <option value="date_of_injury_aware">Date Client Became Aware of Injury</option>
+                            <option value="date_of_injury">facebook_injury_date</option>
+                            <option value="call_back_date">Call Back Date</option>
                             </select>
                         </div>
 
                 </div>
                 <div class="form-row">
-                        <div class="col-sm-2 my-1">
-                            <label>Select a Column</label>
-                       </div>
-                        <div class="col-sm-10 my-1">
-                            <select id="inputState" class="form-control option" name="column[column_name11]">
-                              @includeif('crm.accounts._common_field_list_edit',['filter'=>$filter,'columns'=>$columns,'column_name'=>'column_name11']);
-                            </select>
-                        </div>
+                      <div class="col-sm-2 my-1">
+                          <label>Select a Column</label>
+                     </div>
+                      <div class="col-sm-10 my-1">
+                          <select id="inputState" class="form-control option" name="column_days">
+                              <option value="custom">Custom</option>
+                              <option value="prevfy">Previous FY</option>
+                              <option value="thisfy">Current FY</option>
+                              <option value="nextfy">Next FY</option>
+                              <option value="prevfq">Previous FQ</option>
+                              <option value="thisfq">Current FQ</option>
+                              <option value="nextfq">Next FQ</option>
+                              <option value="yesterday">Yesterday</option>
+                              <option value="today">Today</option>
+                              <option value="tomorrow">Tomorrow</option>
+                              <option value="lastweek">Last Week</option>
+                              <option value="thisweek">Current Week</option>
+                              <option value="nextweek">Next Week</option>
+                              <option value="lastmonth">Last Month</option>
+                              <option value="thismonth">Current Month</option>
+                              <option value="nextmonth">Next Month</option>
+                              <option value="last7days">Last 7 Days</option>
+                              <option value="last30days">Last 30 Days</option>
+                              <option value="last60days">Last 60 Days</option>
+                              <option value="last90days">Last 90 Days</option>
+                              <option value="last120days">Last 120 Days</option>
+                              <option value="next30days">Next 30 Days</option>
+                              <option value="next60days">Next 60 Days</option>
+                              <option value="next90days">Next 90 Days</option>
+                              <option value="next120days">Next 120 Days</option>
+                              <option value="overdue">Overdue</option>
+                          </select>
+                      </div>
 
                 </div>
                 <div class="form-row">
@@ -163,7 +193,7 @@ form h2
                             <label>Start Date</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                             <input type="date" class="form-control" placeholder="Value" name="column[start_date]">
+                             <input type="date" class="form-control" placeholder="Value" name="start_date">
                         </div>
 
                 </div>
@@ -172,12 +202,12 @@ form h2
                             <label>Start Date</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                             <input type="date" class="form-control" placeholder="Value" name="column[end_date]">
+                             <input type="date" class="form-control" placeholder="Value" name="end_date">
                         </div>
 
                 </div>
             </div>
-            <div style="display: none" class="tab-pane fade" id="profile-just" role="tabpanel" aria-labelledby="profile-tab-just">
+            <!-- <div style="display: none" class="tab-pane fade" id="profile-just" role="tabpanel" aria-labelledby="profile-tab-just">
                <h2 class="heading">Advance Search</h2>
                 <div class="form-row pull-right"> 
                     <button class="btn btn-info btn-sm">New Group</button> 
@@ -204,7 +234,7 @@ form h2
                   <input type="search" class="form-control" placeholder="search" name="column[search]">
               </div>
             </div>
-            </div>
+            </div> -->
           </div>
           </div>
             <div class="form-row">
@@ -222,13 +252,122 @@ form h2
 </div>
 @section('requirejs')
   <script type="text/javascript">
-    $('#home-tab-just').click(function(){
-      $('#home-just').show();
-      $('#profile-just').hide();
-    });
-    $('#profile-tab-just').click(function(){
-      $('#profile-just').show();
-      $('#home-just').hide();
-    });
+   function showDateRange( type ) {
+        if (type!="custom") {
+          document.CustomView.startdate.readOnly=true
+          document.CustomView.enddate.readOnly=true
+          getObj("jscal_trigger_date_start").style.visibility="hidden"
+          getObj("jscal_trigger_date_end").style.visibility="hidden"
+        } else {
+          document.CustomView.startdate.readOnly=false
+          document.CustomView.enddate.readOnly=false
+          getObj("jscal_trigger_date_start").style.visibility="visible"
+          getObj("jscal_trigger_date_end").style.visibility="visible"
+        }
+        if( type == "today" ) {
+          document.CustomView.startdate.value = "06-12-2019";
+          document.CustomView.enddate.value = "06-12-2019";
+
+        } else if( type == "yesterday" ) {
+          document.CustomView.startdate.value = "05-12-2019";
+          document.CustomView.enddate.value = "05-12-2019";
+
+        } else if( type == "tomorrow" ) {
+          document.CustomView.startdate.value = "07-12-2019";
+          document.CustomView.enddate.value = "07-12-2019";
+
+        } else if( type == "thisweek" ) {
+          document.CustomView.startdate.value = "01-12-2019";
+          document.CustomView.enddate.value = "07-12-2019";
+
+        } else if( type == "lastweek" ) {
+          document.CustomView.startdate.value = "24-11-2019";
+          document.CustomView.enddate.value = "30-11-2019";
+
+        } else if( type == "nextweek" ) {
+          document.CustomView.startdate.value = "08-12-2019";
+          document.CustomView.enddate.value = "14-12-2019";
+
+        } else if( type == "thismonth" ) {
+          document.CustomView.startdate.value = "01-12-2019";
+          document.CustomView.enddate.value = "31-12-2019";
+
+        } else if( type == "lastmonth" ) {
+          document.CustomView.startdate.value = "01-11-2019";
+          document.CustomView.enddate.value = "30-11-2019";
+
+        } else if( type == "nextmonth" ) {
+          document.CustomView.startdate.value = "01-01-2020";
+          document.CustomView.enddate.value = "31-01-2020";
+
+        } else if( type == "next7days" ) {
+          document.CustomView.startdate.value = "06-12-2019";
+          document.CustomView.enddate.value = "12-12-2019";
+
+        } else if( type == "next30days" ) {
+          document.CustomView.startdate.value = "06-12-2019";
+          document.CustomView.enddate.value = "04-01-2020";
+
+        } else if( type == "next60days" ) {
+          document.CustomView.startdate.value = "06-12-2019";
+          document.CustomView.enddate.value = "03-02-2020";
+
+        } else if( type == "next90days" ) {
+          document.CustomView.startdate.value = "06-12-2019";
+          document.CustomView.enddate.value = "04-03-2020";
+
+        } else if( type == "next120days" ) {
+          document.CustomView.startdate.value = "06-12-2019";
+          document.CustomView.enddate.value = "03-04-2020";
+
+        } else if( type == "last7days" ) {
+          document.CustomView.startdate.value = "30-11-2019";
+          document.CustomView.enddate.value =  "06-12-2019";
+
+        } else if( type == "last30days" ) {
+          document.CustomView.startdate.value = "07-11-2019";
+          document.CustomView.enddate.value = "06-12-2019";
+
+        } else if( type == "last60days" ) {
+          document.CustomView.startdate.value = "08-10-2019";
+          document.CustomView.enddate.value = "06-12-2019";
+
+        } else if( type == "last90days" ) {
+          document.CustomView.startdate.value = "08-09-2019";
+          document.CustomView.enddate.value = "06-12-2019";
+
+        } else if( type == "last120days" ) {
+          document.CustomView.startdate.value = "09-08-2019";
+          document.CustomView.enddate.value = "06-12-2019";
+
+        } else if( type == "thisfy" ) {
+          document.CustomView.startdate.value = "01-01-2019";
+          document.CustomView.enddate.value = "31-12-2019";
+
+        } else if( type == "prevfy" ) {
+          document.CustomView.startdate.value = "01-01-2018";
+          document.CustomView.enddate.value = "31-12-2018";
+
+        } else if( type == "nextfy" ) {
+          document.CustomView.startdate.value = "01-01-2020";
+          document.CustomView.enddate.value = "31-12-2020";
+
+        } else if( type == "nextfq" ) {
+          document.CustomView.startdate.value = "01-01-2020";
+          document.CustomView.enddate.value = "31-03-2020";
+
+        } else if( type == "prevfq" ) {
+          document.CustomView.startdate.value = "01-07-2019";
+          document.CustomView.enddate.value = "30-09-2019";
+
+        } else if( type == "thisfq" ) {
+          document.CustomView.startdate.value = "01-10-2019";
+          document.CustomView.enddate.value = "31-12-2019";
+
+        } else {
+          document.CustomView.startdate.value = "";
+          document.CustomView.enddate.value = "";
+        }
+      }
   </script>
 @endsection

@@ -20,6 +20,10 @@ class FilterTable extends Migration
             $table->string('list_in_metrics')->nullable();
             $table->string('set_as_public')->nullable();
             $table->string('module_type')->nullable();
+            $table->string('column_from')->nullable();
+            $table->string('column_days')->nullable();
+            $table->string('start_date')->nullable();
+            $table->string('end_date')->nullable();
             $table->enum('filter_type',['standard','advance'])->default('standard');
             $table->enum('status',['active','inactive','pending'])->default('active');
             $table->timestamps();

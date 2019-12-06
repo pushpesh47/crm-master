@@ -26,23 +26,35 @@
 <div class="clearfix"></div>
 <div class="row filter">
 <div class="col-md-12 col-sm-12 col-xs-12">
-  <div class="col-sm-2">
-  </div>
-  <div class="col-sm-4">
+  <form method="get" action="{{url('crm/accounts')}}">
+  <div class="col-sm-3">
     <input type="text" placeholder="Search..." name="search" class="form-control" >
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-3">
     <select name="search_column" class="form-control">
       @if(!empty($viewColumn))
         @foreach($viewColumn as $viewCol)
           <option value="{{$viewCol['meta_value']}}">{{$viewCol['meta_name']}}</option>
         @endforeach
+      @else
+        <option value="name">Customer name</option>
+        <option value="email">Email</option>
+        <option value="customer_number">Customer No</option>
+        <option value="mobile">Mobile Number</option>
+        <option value="status">Status</option>
       @endif
-      <option value="">customer name</option>
     </select>
+    @if(!empty($_REQUEST['filter']))
+      <input type="hidden" name="filter" value="{{$_REQUEST['filter']}}">
+      <input type="hidden" name="module" value="{{$_REQUEST['module']}}">
+    @endif
   </div>
-  <div class="col-sm-2">
+  <div class="col-sm-3">
+    <input type="submit" value="Search" class="btn btn-success">
   </div>
+  <div class="col-sm-3">
+  </div>
+</form>
 </div>
 <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="col-sm-4">

@@ -140,8 +140,12 @@ form h2
                             <label>Select a Column</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                            <select id="inputState" class="form-control option" name="column[column_name10]">
-                              @includeif('crm.accounts._common_field_list');
+                            <select id="inputState" class="form-control option" name="column_from">
+                              <option value="date_of_injury">Date Of Injury</option>
+                              <option value="date_of_injury">Date Lead Recieved</option>
+                              <option value="date_of_injury_aware">Date Client Became Aware of Injury</option>
+                              <option value="date_of_injury">facebook_injury_date</option>
+                              <option value="call_back_date">Call Back Date</option>
                             </select>
                         </div>
 
@@ -151,8 +155,33 @@ form h2
                             <label>Select a Column</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                            <select id="inputState" class="form-control option" name="column[column_name11]">
-                              @includeif('crm.accounts._common_field_list');
+                            <select id="inputState" class="form-control option" name="column_days">
+                              <option value="custom">Custom</option>
+                              <option value="prevfy">Previous FY</option>
+                              <option value="thisfy">Current FY</option>
+                              <option value="nextfy">Next FY</option>
+                              <option value="prevfq">Previous FQ</option>
+                              <option value="thisfq">Current FQ</option>
+                              <option value="nextfq">Next FQ</option>
+                              <option value="yesterday">Yesterday</option>
+                              <option value="today">Today</option>
+                              <option value="tomorrow">Tomorrow</option>
+                              <option value="lastweek">Last Week</option>
+                              <option value="thisweek">Current Week</option>
+                              <option value="nextweek">Next Week</option>
+                              <option value="lastmonth">Last Month</option>
+                              <option value="thismonth">Current Month</option>
+                              <option value="nextmonth">Next Month</option>
+                              <option value="last7days">Last 7 Days</option>
+                              <option value="last30days">Last 30 Days</option>
+                              <option value="last60days">Last 60 Days</option>
+                              <option value="last90days">Last 90 Days</option>
+                              <option value="last120days">Last 120 Days</option>
+                              <option value="next30days">Next 30 Days</option>
+                              <option value="next60days">Next 60 Days</option>
+                              <option value="next90days">Next 90 Days</option>
+                              <option value="next120days">Next 120 Days</option>
+                              <option value="overdue">Overdue</option>
                             </select>
                         </div>
 
@@ -162,7 +191,7 @@ form h2
                             <label>Start Date</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                             <input type="date" class="form-control" placeholder="Value" name="column[start_date]">
+                             <input type="date" class="form-control" placeholder="Value" name="start_date">
                         </div>
 
                 </div>
@@ -171,12 +200,12 @@ form h2
                             <label>Start Date</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                             <input type="date" class="form-control" placeholder="Value" name="column[end_date]">
+                             <input type="date" class="form-control" placeholder="Value" name="end_date">
                         </div>
 
                 </div>
             </div>
-            <div style="display: none" class="tab-pane fade" id="profile-just" role="tabpanel" aria-labelledby="profile-tab-just">
+            <!-- <div style="display: none" class="tab-pane fade" id="profile-just" role="tabpanel" aria-labelledby="profile-tab-just">
                <h2 class="heading">Advance Search</h2>
                 <div class="form-row pull-right"> 
                     <button class="btn btn-info btn-sm">New Group</button> 
@@ -185,7 +214,7 @@ form h2
                   <input type="hidden" name="filter_type" value="advace">
                     <div class="form-row">
               <div class="col-sm-3 my-1">
-                  <select id="inputState" class="form-control option" name="column[column_name12]">
+                  <select id="inputState" class="form-control option" name="column_name">
                     @includeif('crm.accounts._common_field_list');
                   </select>
               </div>
@@ -203,7 +232,7 @@ form h2
                   <input type="search" class="form-control" placeholder="search" name="column[search]">
               </div>
             </div>
-            </div>
+            </div> -->
           </div>
           </div>
             <div class="form-row">

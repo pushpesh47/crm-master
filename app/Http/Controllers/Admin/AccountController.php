@@ -39,12 +39,16 @@ class AccountController extends Controller
             $view_id = ___decrypt($_REQUEST['filter']);
             $data['viewColumn']=_arefy(FilterViewDetail::where(['filter_view_id'=>$view_id])->where('meta_value','!=',NULL)->get());
         }
+       // $where='1';
+        if(!empty($_REQUEST['search_column'])){
+            $where = $_REQUEST['search_column']." LIKE '%".$_REQUEST['search']."%'";
+        }
         $data['title'] = 'Account List';
         $data['create_title'] = 'Accounts';
         $data['view'] = 'crm.accounts.list';
         $data['filter']  = _arefy(FilterView::orderBy('id','desc')->where('status','active')->get());
         $check ='<input type="checkbox" name="accountAll" id="checkedAll" >';
-        $account= _arefy(Account::list('array'));
+        $account= _arefy(Account::list('array',$where));
         if ($request->ajax()) {
             return DataTables::of($account)
             ->editColumn('action',function($item){
@@ -85,6 +89,11 @@ class AccountController extends Controller
                 $url=url('crm/accounts/'.___encrypt($item['id']));
                 return '<a href="'.$url.'">'.$item['name'].'</a>';
             })
+            ->editColumn('sales_agent',function($item){
+                $user = User::where('id',$item['sales_agent'])->first();
+                $url=url('crm/user/'.___encrypt($item['id'].'/edit'));
+                return '<a href="'.$url.'">'.$user['first_name'].'</a>';
+            })
              ->editColumn('email',function($item){
                 $url=url('crm/accounts/'.___encrypt($item['id']));
                 return '<a href="'.$url.'">'.$item['email'].'</a>';
@@ -93,7 +102,7 @@ class AccountController extends Controller
                
                 return '<input type="checkbox" class="checkSingle" name="account[]" value="'.$item['id'].'">';
             })
-            ->rawColumns(['action','name','email','checkbox'])
+            ->rawColumns(['action','name','email','checkbox','sales_agent'])
             ->make(true);
         }
         $data['html'] = $builder
@@ -101,13 +110,19 @@ class AccountController extends Controller
             "dom" => "<'row table table-striped table-bordered bulk_action' <'col-md-6 col-sm-12 col-xs-4'l><'col-md-6 col-sm-12 col-xs-4'f>><'row filter'><'row white_box_wrapper database_table table-responsive'rt><'row' <'col-md-6'i><'col-md-6'p>>",
 
         ])
-        ->addColumn(['data' => 'checkbox', 'name' => 'checkbox','title' => $check,'orderable' => false, 'width' => 120])
-        ->addColumn(['data' => 'name', 'name' => 'name','title' => 'Cutomer Name','orderable' => true, 'width' => 120])
-        ->addColumn(['data' => 'email', 'name' => 'email','title' => 'Email','orderable' => true, 'width' => 120])
-        ->addColumn(['data' => 'mobile', 'name' => 'mobile','title' => 'Mobile Number','orderable' => true, 'width' => 120])
-        ->addColumn(['data' => 'customer_number', 'name' => 'customer_number','title' => 'Customer No','orderable' => true, 'width' => 120])
-        ->addColumn(['data' => 'status','name' => 'status','title' => 'Status','orderable' => true, 'width' => 120])
-        ->addAction(['title' => 'Action', 'orderable' => true, 'width' => 120]);
+        ->addColumn(['data' => 'checkbox', 'name' => 'checkbox','title' => $check,'orderable' => false, 'width' => 120]);
+        if(!empty($_REQUEST['filter'])){
+            foreach ($data['viewColumn'] as $key => $value) {
+                $builder->addColumn(['data' => $value['meta_value'], 'name' => $value['meta_value'],'title' => $value['meta_name'],'orderable' => true, 'width' => 120]);
+            }
+        }else{
+            $builder->addColumn(['data' => 'name', 'name' => 'name','title' => 'Customer name','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'email', 'name' => 'email','title' => 'Email','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'mobile', 'name' => 'mobile','title' => 'Mobile Number','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'customer_number', 'name' => 'customer_number','title' => 'Customer No','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'status','name' => 'status','title' => 'Status','orderable' => true, 'width' => 120]);
+        }
+        $builder->addAction(['title' => 'Action', 'orderable' => true, 'width' => 120]);
         return view('crm.index')->with($data);
     }
 
