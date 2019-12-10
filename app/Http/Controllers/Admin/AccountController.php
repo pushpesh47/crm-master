@@ -627,5 +627,4 @@ class AccountController extends Controller
         return $this->populateresponse();
     }
 
-
 }
