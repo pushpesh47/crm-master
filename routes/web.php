@@ -46,6 +46,8 @@
 		Route::post('/change-password','AdminController@changePassword');
 
 
+		Route::get('/accounts/import','AccountController@accountImport');
+		Route::post('/accounts/uploadFile','AccountController@uploadFile');
 		Route::get('/accounts/mail','AccountController@mail');
 		Route::post('/accounts/bulk-delete','AccountController@bulkDelete');
 		Route::post('/accounts/mail-sent','AccountController@mailSent');

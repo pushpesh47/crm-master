@@ -35,18 +35,30 @@ class AccountController extends Controller
 
     public function index(Request $request,Builder $builder)
     {
+        if(empty($_REQUEST['search_column'])){
+            $data['search_column']='';
+            $data['search']='';
+        }
+        else{
+            $data['search_column']=$_REQUEST['search_column'];
+            $data['search']=$_REQUEST['search'];
+        }
         if(!empty($_REQUEST['filter']) && !empty($_REQUEST['module'])){
             $view_id = ___decrypt($_REQUEST['filter']);
             $data['viewColumn']=_arefy(FilterViewDetail::where(['filter_view_id'=>$view_id])->where('meta_value','!=',NULL)->get());
         }
-       // $where='1';
+        $where='1';
+        $data['filter']  = _arefy(FilterView::orderBy('id','desc')->where('status','active')->get());
         if(!empty($_REQUEST['search_column'])){
-            $where = $_REQUEST['search_column']." LIKE '%".$_REQUEST['search']."%'";
+            $where .=' AND '.$_REQUEST['search_column']." LIKE '%".$_REQUEST['search']."%'";
         }
+        /*if(!empty($data['filter'])){
+            //'created_at', [$from.' 00:00:00',$to.' 23:59:59']
+            $where = $_REQUEST['search_column']." = '%".$_REQUEST['search']."%'";
+        }*/
         $data['title'] = 'Account List';
         $data['create_title'] = 'Accounts';
         $data['view'] = 'crm.accounts.list';
-        $data['filter']  = _arefy(FilterView::orderBy('id','desc')->where('status','active')->get());
         $check ='<input type="checkbox" name="accountAll" id="checkedAll" >';
         $account= _arefy(Account::list('array',$where));
         if ($request->ajax()) {
@@ -500,5 +512,150 @@ class AccountController extends Controller
         }
         return $this->populateresponse();
     }
-  
+
+    public function accountImport(Request $request){
+            $data['view']='crm.accounts.import';
+            return view('crm.index',$data);
+            /*$get=Account::orderBy('id','desc')->first();
+            if(!empty($get)){
+                $id=$get->id;
+            }else{
+                $id=0;
+            }
+            $csv_data->customer_number = 'ACCOUNT'.$id;
+            $csv_data->name = $data[0];
+            $csv_data->date_of_injury = $data[1];
+            $csv_data->account_status = $data[2];
+            $csv_data->first_name = $data[3];
+            $csv_data->last_name = $data[4];
+            $csv_data->email = $data[5];
+            $csv_data->mobile = $data[6];
+            $csv_data->alternate_mobile = $data[7];
+            $csv_data->lead_source = $data[8];
+            $csv_data->injury_type = $data[9];
+            $csv_data->potential_defendant = $data[10];
+            $csv_data->date_of_injury_aware = $data[11];
+            $csv_data->lead_quality = $data[12];
+            $csv_data->facebook_injury_date = $data[13];
+            $csv_data->enquiry_type = $data[14];
+            $csv_data->panel_refrence = $data[15];
+            $csv_data->type_of_lead = $data[16];
+            $csv_data->date_lead_recieved = $data[17];
+            $csv_data->home_telephone_number = $data[18];
+            $csv_data->mobile_telephone_number = $data[19];
+            $csv_data->social_media_handle = $data[20];
+            $csv_data->date_of_birth = $data[21];
+            $csv_data->address = $data[22];
+            $csv_data->call_transfer_time = $data[23];
+            $csv_data->call_back_time = $data[24];
+            $csv_data->call_back_date = $data[25];*/
+               
+    }
+
+    public function uploadFile(Request $request){
+
+
+          $file = $request->file('file');
+          // File Details 
+          $filename = $file->getClientOriginalName();
+          $extension = $file->getClientOriginalExtension();
+          $tempPath = $file->getRealPath();
+          $fileSize = $file->getSize();
+          $mimeType = $file->getMimeType();
+
+          // Valid File Extensions
+          $valid_extension = array("csv");
+
+          // 2MB in Bytes
+          $maxFileSize = 2097152; 
+
+          // Check file extension
+          if(in_array(strtolower($extension),$valid_extension)){
+            // Check file size
+            if($fileSize <= $maxFileSize){
+
+              // File upload location
+              $location = 'uploads';
+              $location1 = public_path('uploads');
+
+              // Upload file
+              $file->move($location1,$filename);
+
+              // Import CSV to Database
+              $filepath = public_path($location."/".$filename);
+
+              // Reading file
+              $file = fopen($filepath,"r");
+
+              $importData_arr = array();
+              $i = 0;
+
+              while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
+                 $num = count($filedata );
+                 
+                 // Skip first row (Remove below comment if you want to skip the first row)
+                 /*if($i == 0){
+                    $i++;
+                    continue; 
+                 }*/
+                 for ($c=0; $c < $num; $c++) {
+                    $importData_arr[$i][] = $filedata [$c];
+                 }
+                 $i++;
+              }
+              fclose($file);
+
+              // Insert to MySQL database
+             //dd($importData_arr);
+
+              foreach($importData_arr as $data){
+                $get=Account::orderBy('id','desc')->first();
+                if(!empty($get)){
+                    $id=$get->id;
+                }else{
+                    $id=0;
+                }
+                $csv_data['customer_number'] = 'ACCOUNT'.$id;
+                $csv_data['name'] = $data[0];
+                $csv_data['date_of_injury'] = $data[1];
+                $csv_data['account_status'] = $data[2];
+                $csv_data['first_name'] = $data[3];
+                $csv_data['last_name'] = $data[4];
+                $csv_data['email'] = $data[5];
+                $csv_data['mobile'] = $data[6];
+                $csv_data['alternate_mobile'] = $data[7];
+                $csv_data['lead_source'] = $data[8];
+                $csv_data['injury_type'] = $data[9];
+                $csv_data['potential_defendant'] = $data[10];
+                $csv_data['date_of_injury_aware'] = $data[11];
+                $csv_data['lead_quality'] = $data[12];
+                $csv_data['facebook_injury_date'] = $data[13];
+                $csv_data['enquiry_type'] = $data[14];
+                $csv_data['panel_refrence'] = $data[15];
+                $csv_data['type_of_lead'] = $data[16];
+                $csv_data['date_lead_recieved'] = $data[17];
+                $csv_data['home_telephone_number'] = $data[18];
+                $csv_data['mobile_telephone_number'] = $data[19];
+                $csv_data['social_media_handle'] = $data[20];
+                $csv_data['date_of_birth'] = $data[21];
+                $csv_data['address'] = $data[22];
+                $csv_data['call_transfer_time'] = $data[23];
+                $csv_data['call_back_time'] = $data[24];
+                $csv_data['call_back_date'] = $data[25];
+                Account::insertGetId($csv_data);
+              }
+
+              \Session::flash('message','Import Successful.');
+            }else{
+              \Session::flash('message','File too large. File must be less than 2MB.');
+            }
+
+          }else{
+             \Session::flash('message','Invalid File Extension.');
+          }
+
+        return redirect('crm/accounts');
+    }
+
+
 }
