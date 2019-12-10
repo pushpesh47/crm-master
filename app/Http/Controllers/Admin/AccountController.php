@@ -35,22 +35,20 @@ class AccountController extends Controller
 
     public function index(Request $request,Builder $builder)
     {
+        if(!empty($_REQUEST['filter']) && !empty($_REQUEST['module'])){
+                $view_id = ___decrypt($_REQUEST['filter']);
+                $data['viewColumn']=_arefy(FilterViewDetail::where(['filter_view_id'=>$view_id])->where('meta_value','!=',NULL)->get());
+        }
+        $where=1;
+        $data['filter']  = _arefy(FilterView::orderBy('id','desc')->where('status','active')->get());
         if(empty($_REQUEST['search_column'])){
             $data['search_column']='';
             $data['search']='';
-        }
-        else{
+        }else{
             $data['search_column']=$_REQUEST['search_column'];
             $data['search']=$_REQUEST['search'];
-        }
-        if(!empty($_REQUEST['filter']) && !empty($_REQUEST['module'])){
-            $view_id = ___decrypt($_REQUEST['filter']);
-            $data['viewColumn']=_arefy(FilterViewDetail::where(['filter_view_id'=>$view_id])->where('meta_value','!=',NULL)->get());
-        }
-        $where='1';
-        $data['filter']  = _arefy(FilterView::orderBy('id','desc')->where('status','active')->get());
-        if(!empty($_REQUEST['search_column'])){
-            $where .=' AND '.$_REQUEST['search_column']." LIKE '%".$_REQUEST['search']."%'";
+            $where .=' AND '.$_REQUEST['search_column']." LIKE '% ".$_REQUEST['search']." %'";
+            //pp($where);
         }
         /*if(!empty($data['filter'])){
             //'created_at', [$from.' 00:00:00',$to.' 23:59:59']
@@ -123,7 +121,7 @@ class AccountController extends Controller
 
         ])
         ->addColumn(['data' => 'checkbox', 'name' => 'checkbox','title' => $check,'orderable' => false, 'width' => 120]);
-        if(!empty($_REQUEST['filter'])){
+        if(!empty($_REQUEST['filter']) && $_REQUEST['filter']!='all'){
             foreach ($data['viewColumn'] as $key => $value) {
                 $builder->addColumn(['data' => $value['meta_value'], 'name' => $value['meta_value'],'title' => $value['meta_name'],'orderable' => true, 'width' => 120]);
             }
