@@ -20,7 +20,6 @@ class Validate
 	public function __construct($data){
 		$this->data = $data;
 	}
-
 	private function validation($key){
 		$validation = [
 			'id'					=> ['required'],
@@ -43,7 +42,8 @@ class Validate
 			'slug_cat'				=> ['required','max:255'],
 			'title'             	=> ['required','string'],
 			'profile_picture'   	=> ['required','mimes:doc,docx,pdf','max:2048'],
-			'question_file'   		=> ['required'/*,'mimes:xls,xlsx'*/],
+			'import_file'   		=> ['required'/*,'mimes:csv'*/],
+			
 			'pin_code' 				=> ['nullable','max:6','min:4'],
 			'appointment_date'  	=> ['required','string'],
 			'type' 	            	=> ['required','string'],
@@ -76,8 +76,6 @@ class Validate
 			'video_null'			=> ['nullable','mimes:mp4,mov,ogg,qt','max:51200'],
 			'photo_null'			=> ['nullable','mimes:jpg,jpeg,png','max:2048'],
 			'number_req'			=> ['required','integer','in:0,1'],
-
-
 		];
 		return $validation[$key];
 	}
@@ -128,7 +126,6 @@ class Validate
 					}        
 				});
 			}
-			
 			if(!empty($this->data->email)){
 				$userDetails = Account::where('email',$this->data->email)->where('id','!=',$this->data->id)->first();
 				$validator->after(function ($validator) use($userDetails) {
@@ -220,7 +217,6 @@ class Validate
 	}
 
 	public function addQuestion($action='add'){
-		
 		if(empty($this->data->import)){
 				$validations = [
 					'question_type' 					=> $this->validation('name'),
@@ -232,7 +228,6 @@ class Validate
 					'difficulty_level' 				=> $this->validation('name'),
 				];
 		}else{
-			
 			$validations = [
 					'question_import' 			=> $this->validation('question_file'),
 					'group' 					=> $this->validation('id'),
@@ -579,6 +574,15 @@ class Validate
 			'view_name'					=> $this->validation('name'),
     	];
     	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
+	public function importAccount($action='add'){
+		$validations = [
+			'file' 						=> $this->validation('import_file'),
+		];
+		$validator = \Validator::make($this->data->all(), $validations,[]);
+		
 		return $validator;
 	}
 	

@@ -80,7 +80,8 @@
           <a href="{{url('crm/accounts/create')}}" type="button" class="btn btn-info">Add New Acccount</a>
            <a href="javascript:void(0);" id="pdf"  data-url="{{url('crm/accounts/pdf')}}" data-request="ajax-get-form" data-id="export" data-target="#section-mail" class="btn btn-success">PDF Export</a>
            <a href="javascript:void(0);" id="mailer-export"  data-url="{{url('crm/accounts/mailer-export')}}" data-request="ajax-get-form" data-id="mail-export" data-target="#section-mail" class="btn btn-success">Mailer Export</a>
-           <button   id="mailChecked" data-url="{{url('crm/accounts/mail-sent')}}" data-request="ajax-get-form" data-id="mail" data-target="#section-mail" class="btn btn-warning">Mail</button>
+           <button  id="mailChecked" data-url="{{url('crm/accounts/mail-sent')}}" data-request="ajax-get-form" data-id="mail" data-target="#section-mail" class="btn btn-warning">Mail</button>
+           <a href="{{url('crm/accounts/import')}}"  class="btn btn-primary">Import</a>
            <a href="" class="btn btn-info">Cancel</a>
           
           <ul class="nav navbar-right panel_toolbox">

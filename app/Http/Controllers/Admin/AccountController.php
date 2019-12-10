@@ -512,47 +512,17 @@ class AccountController extends Controller
     }
 
     public function accountImport(Request $request){
-            $data['view']='crm.accounts.import';
-            return view('crm.index',$data);
-            /*$get=Account::orderBy('id','desc')->first();
-            if(!empty($get)){
-                $id=$get->id;
-            }else{
-                $id=0;
-            }
-            $csv_data->customer_number = 'ACCOUNT'.$id;
-            $csv_data->name = $data[0];
-            $csv_data->date_of_injury = $data[1];
-            $csv_data->account_status = $data[2];
-            $csv_data->first_name = $data[3];
-            $csv_data->last_name = $data[4];
-            $csv_data->email = $data[5];
-            $csv_data->mobile = $data[6];
-            $csv_data->alternate_mobile = $data[7];
-            $csv_data->lead_source = $data[8];
-            $csv_data->injury_type = $data[9];
-            $csv_data->potential_defendant = $data[10];
-            $csv_data->date_of_injury_aware = $data[11];
-            $csv_data->lead_quality = $data[12];
-            $csv_data->facebook_injury_date = $data[13];
-            $csv_data->enquiry_type = $data[14];
-            $csv_data->panel_refrence = $data[15];
-            $csv_data->type_of_lead = $data[16];
-            $csv_data->date_lead_recieved = $data[17];
-            $csv_data->home_telephone_number = $data[18];
-            $csv_data->mobile_telephone_number = $data[19];
-            $csv_data->social_media_handle = $data[20];
-            $csv_data->date_of_birth = $data[21];
-            $csv_data->address = $data[22];
-            $csv_data->call_transfer_time = $data[23];
-            $csv_data->call_back_time = $data[24];
-            $csv_data->call_back_date = $data[25];*/
-               
+        $data['view']='crm.accounts.import';
+        return view('crm.index',$data);
     }
 
     public function uploadFile(Request $request){
-
-
+        $validation = new Validations($request);
+        $validator   = $validation->importAccount();
+        if($validator->fails()){
+            $this->message = $validator->errors();
+            return $this->populateresponse();
+        }
           $file = $request->file('file');
           // File Details 
           $filename = $file->getClientOriginalName();
@@ -643,16 +613,18 @@ class AccountController extends Controller
                 Account::insertGetId($csv_data);
               }
 
-              \Session::flash('message','Import Successful.');
+              \Session::flash('success','Import Successful.');
             }else{
-              \Session::flash('message','File too large. File must be less than 2MB.');
+              \Session::flash('success','File too large. File must be less than 2MB.');
             }
 
           }else{
-             \Session::flash('message','Invalid File Extension.');
+             \Session::flash('success','Invalid File Extension.');
           }
 
-        return redirect('crm/accounts');
+        $this->status   = true;
+        $this->redirect = url('crm/accounts');
+        return $this->populateresponse();
     }
 
 
