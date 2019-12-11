@@ -33,6 +33,10 @@
     <link href="{{url('assets/bower_components/sweetalert2.css')}}" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
+    
 
 
     @yield('requirecss')
@@ -106,11 +110,23 @@
     <script src="{{url('assets/bower_components/sweetalert2.min.js')}}"></script>
     <script src="{{url('assets/script.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
     @yield('requirejs')
     <script type="text/javascript">
         $(window).on('load',function(){
             $('#myModal').modal('show');
+            $("#datepicker").datepicker({
+            showOn: "button",
+            buttonImage: "https://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+            buttonImageOnly: true,
+            buttonText: "Select date"
+            });
+            $('#input_starttime').timepicker({
+            // 12 or 24 hour
+                twelvehour: true,
+            });
         });
     </script>
     @includeIf('crm.includes.reminder_model')

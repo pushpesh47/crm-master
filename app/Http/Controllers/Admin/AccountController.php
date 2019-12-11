@@ -233,15 +233,29 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $data['title'] = 'Account Edit';
         $data['create_title'] = 'Accounts';
         $data['view'] = 'crm.accounts.view';
         $data['form']=_arefy(DynamicForm::where('module_type','account')->Orderby('id','desc')->get());
         $id = ___decrypt($id);
-        $where='id='.$id;
-        $data['account']  = _arefy(Account::list('single',$where));
+        $where=1;
+        if(!empty($id)){
+            if($request->view=='next'){
+                $where.=' AND id < '.$id;
+                $order = 'id-desc';
+            }elseif($request->view=='previous'){
+                $where.=' AND id > '.$id;
+                $order = 'id-asc';
+            }else{
+                $where.=' AND id='.$id; 
+                $order = 'id-desc';  
+            }
+        }
+        
+        $data['account']  = _arefy(Account::list('single',$where,['*'],$order));
+        //dd($data['account']);
         return view('crm.index',$data);
     }
 

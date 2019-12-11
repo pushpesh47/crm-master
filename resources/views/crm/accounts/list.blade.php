@@ -1,6 +1,10 @@
 <div class="right_col" role="main">
   <div class="row filter">
     <div class="col-md-12 col-sm-12 col-xs-12">
+      <p>
+        <input type="hidden" title="Calendar" id="datepicker" />
+         <input  type="text" id="input_starttime" class="timepicker">
+      </p>
       <form method="get" action="{{url('crm/accounts')}}">
         <div class="col-sm-3">
           <input type="text" value="{{$search}}" placeholder="Search..." name="search" class="form-control" >
@@ -9,7 +13,7 @@
           <select name="search_column" class="form-control">
             @if(!empty($viewColumn))
               @foreach($viewColumn as $viewCol)
-              <option @if($search_column==$viewCol['meta_value']) selected="" @endif value="{{$viewCol['meta_value']}}">{{$viewCol['meta_name']}}</option>
+                <option @if($search_column==$viewCol['meta_value']) selected="" @endif value="{{$viewCol['meta_value']}}">{{$viewCol['meta_name']}}</option>
               @endforeach
             @else
               <option @if($search_column=='name') selected="" @endif value="name">Customer name</option>

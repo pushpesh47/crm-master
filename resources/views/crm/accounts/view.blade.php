@@ -35,7 +35,12 @@
             <a href="javascript:void(0);"data-value="{{$account['id']}}" data-type="single"  data-url="{{url('crm/accounts/pdf')}}" data-request="ajax-get-form" data-id="export" data-target="#section-mail" class="btn btn-success">PDF Export</a>
 
             <a href="javascript:void(0);" data-value="{{$account['id']}}" data-type="single" id="mailer-export"  data-url="{{url('crm/accounts/mailer-export')}}" data-request="ajax-get-form" data-id="mail-export" data-target="#section-mail" class="btn btn-success">PDF Export Mailer</a>
-            <a href="" class="btn btn-info">Cancel</a>
+              <a href="" class="btn btn-info">Cancel</a>
+              <span style="margin-left: 100px">
+                <a href="{{url('crm/accounts/'.___encrypt($account['id']).'?view=previous')}}" >Previous</a>
+                <a href="{{url('crm/accounts/'.___encrypt($account['id']).'?view=next')}}" >Next</a>
+              </span>
+              
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -68,7 +73,7 @@
                     </div>
                   </div>
                   <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" placeholder="Cutomer No." for="email">Customer No  <span class="required">*</span>
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" placeholder="Cutomer No." for="email">Customer No <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6">
                       <input type="text"  placeholder="Cutomer No."  value="{{$account['customer_number']}}" disabled="" class="form-control">
