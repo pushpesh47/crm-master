@@ -10,6 +10,7 @@ Use App\Models\AccountStatus;
 Use App\Models\LeadSource;
 Use App\Models\Email;
 Use App\Models\Account;
+Use App\Models\SelectList;
 use Hash;
 /**
 * 
@@ -481,6 +482,38 @@ class Validate
 				$validator->after(function ($validator) use($Details) {
 					if(!empty($Details)){
 						$validator->errors()->add('account_status', 'Name Already Exist.');
+					}        
+				});
+			}
+
+		}
+		
+		return $validator;
+	}
+	public function addSelect($action="add")
+	{
+
+		$validations = [
+			'name'					=> $this->validation('name'),
+        	
+    	];
+
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+    	if($action=='add'){
+			if(!empty($this->data->name)){
+				$userDetails = SelectList::where('name',$this->data->name)->first();
+				$validator->after(function ($validator) use($userDetails) {
+					if(!empty($userDetails)){
+						$validator->errors()->add('name', 'Name already exist.');
+					}
+				});
+			}
+		}else{
+			if(!empty($this->data->name)){
+				$Details = SelectList::where('name',$this->data->name)->where('id','!=',$this->data->id)->first();
+				$validator->after(function ($validator) use($Details) {
+					if(!empty($Details)){
+						$validator->errors()->add('name', 'Name Already Exist.');
 					}        
 				});
 			}

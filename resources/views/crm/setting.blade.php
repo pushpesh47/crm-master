@@ -63,6 +63,12 @@
                 <div class="col-md-2">
                   <a href="{{url('crm/form-module')}}" class="btn btn-primary">Custom Field</a>
                 </div>
+                <div class="col-md-2">
+                  <a href="{{url('crm/select/Enquiry-Type')}}" class="btn btn-primary">Enquiry type</a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{{url('crm/select/Type-Of-Leads')}}" class="btn btn-primary">Type Of Leads</a>
+                </div>
             </div>
             </form>
           </div>

@@ -19,6 +19,7 @@ use PDF;
 use Excel;
 use App\Models\FilterView;
 use App\Models\FilterViewDetail;
+use App\Models\SelectList;
 class AccountController extends Controller
 {
     /**
@@ -150,6 +151,7 @@ class AccountController extends Controller
         $data['user_role']=_arefy(User::where('status','active')->Orderby('id','desc')->get());
         $data['account_status']=_arefy(AccountStatus::where('status','active')->Orderby('id','desc')->get());
         $data['lead_source']=_arefy(LeadSource::where('status','active')->Orderby('id','desc')->get());
+        $data['select']=_arefy(SelectList::where('status','active')->Orderby('id','desc')->get());
         $data['view']='crm.accounts.add';
         return view('crm.index',$data);
     }
@@ -280,6 +282,7 @@ class AccountController extends Controller
          $data['user_role']=_arefy(User::where('status','active')->Orderby('id','desc')->get());
         $data['account_status']=_arefy(AccountStatus::where('status','active')->Orderby('id','desc')->get());
         $data['lead_source']=_arefy(LeadSource::where('status','active')->Orderby('id','desc')->get());
+        $data['select']=_arefy(SelectList::where('status','active')->Orderby('id','desc')->get());
         $where='id='.$id;
         $data['account']  = _arefy(Account::list('single',$where));
         return view('crm.index',$data);

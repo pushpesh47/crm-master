@@ -69,8 +69,13 @@
 		Route::post('user-role/status','UserRoleController@changeStatus');
 		Route::resource('/user-role','UserRoleController');
 
-		Route::post('lead-source/status','AccountStatusController@changeStatus');
+		Route::post('account-status/status','AccountStatusController@changeStatus');
 		Route::resource('/account-status','AccountStatusController');
+
+		Route::post('select/{SelectList}/status','SelectListController@changeStatus');
+		Route::get('select/{SelectList}/{id}/edit','SelectListController@edit');
+		Route::post('select/{SelectList}/{id}','SelectListController@update');
+		Route::resource('select/{SelectList}','SelectListController');
 
 		Route::post('lead-source/status','LeadSourceController@changeStatus');
 		Route::resource('/lead-source','LeadSourceController');

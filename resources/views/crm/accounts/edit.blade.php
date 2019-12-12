@@ -80,8 +80,13 @@
                   <div class="col-md-6 col-sm-6">
                     <select class="form-control" name="enquiry_type">
                       <option value="">Select Enquiry Type</option>
-                      <option value="email">Email</option>
-                      <option value="phone">Phone</option>
+                      @if(!empty($select))
+                        @foreach($select as $enquiryType)
+                          @if($enquiryType['type']=='Enquiry-Type')
+                            <option @if($enquiryType['name']==$account['enquiry_type']) selected="" @endif value="{{$enquiryType['name']}}">{{$enquiryType['name']}}</option>
+                          @endif
+                        @endforeach
+                      @endif
                     </select>
                   </div>
                 </div>
@@ -136,8 +141,13 @@
                 <div class="col-md-6 col-sm-6">
                  <select class="form-control" name="type_of_lead">
                        <option value="">Select Type Of Lead</option>
-                      <option value="email">Email</option>
-                      <option value="phone">Phone</option>
+                      @if(!empty($select))
+                        @foreach($select as $TypeOfLead)
+                          @if($TypeOfLead['type']=='Type-Of-Leads')
+                            <option @if($TypeOfLead['name']==$account['type_of_lead']) selected="" @endif value="{{$TypeOfLead['name']}}">{{$TypeOfLead['name']}}</option>
+                          @endif
+                        @endforeach
+                      @endif
                  </select>
                 </div>
               </div>

@@ -40,7 +40,7 @@
                   </div>
                 </div>
                 <div class="item form-group">
-                  <label class="col-form-label col-md-3 col-sm-3 label-align" placeholder="Cutomer No." for="email">Customer No  <span class="required">*</span>
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" placeholder="Cutomer No." for="email">Customer No<span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6">
                     <input type="text" disabled="" placeholder="Cutomer No." value="AUTO GEN ON SAVE" required="required" class="form-control">
@@ -68,8 +68,13 @@
                   <div class="col-md-6 col-sm-6">
                     <select class="form-control" name="enquiry_type">
                       <option value="">Select Enquiry Type</option>
-                      <option value="email">Email</option>
-                      <option value="phone">Phone</option>
+                      @if(!empty($select))
+                        @foreach($select as $enquiryType)
+                          @if($enquiryType['type']=='Enquiry-Type')
+                            <option value="{{$enquiryType['name']}}">{{$enquiryType['name']}}</option>
+                          @endif
+                        @endforeach
+                      @endif
                     </select>
                   </div>
                 </div>
@@ -109,11 +114,8 @@
                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Panel Refrence<span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6">
-                 <select class="form-control" name="panel_refrence">
-                      <option value="">Select Panel Refrence</option>
-                      <option value="email">Email</option>
-                      <option value="phone">Phone</option>
-                 </select>
+                 
+                 <input type="text" id="number" placeholder="Panel Refrence" name="panel_refrence"  class="form-control">
                 </div>
               </div>
             </div>
@@ -124,8 +126,13 @@
                 <div class="col-md-6 col-sm-6">
                  <select class="form-control" name="type_of_lead">
                        <option value="">Select Type Of Lead</option>
-                      <option value="email">Email</option>
-                      <option value="phone">Phone</option>
+                     @if(!empty($select))
+                        @foreach($select as $TypeOfLead)
+                          @if($TypeOfLead['type']=='Type-Of-Leads')
+                            <option value="{{$TypeOfLead['name']}}">{{$TypeOfLead['name']}}</option>
+                          @endif
+                        @endforeach
+                      @endif
                  </select>
                 </div>
               </div>
