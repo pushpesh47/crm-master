@@ -106,7 +106,7 @@ public function store(Request $request)
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/form-module');
-                \Session::flash('success', 'Form Field added Succesful!'); 
+                \Session::flash('success', 'Form Field added Successfully!'); 
            
         }
         return $this->populateresponse();
@@ -150,7 +150,7 @@ public function store(Request $request)
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/form-module');
-                \Session::flash('success', 'Account Updated Succesful!'); 
+                \Session::flash('success', 'Account Updated Successfully!'); 
            
         }
         return $this->populateresponse();

@@ -13,11 +13,11 @@
     </div>
     <div class="form-group">
       <label for="email">Cc:</label>
-      <input type="text" class="form-control" id="email" name="cc">
+      <input type="text" class="form-control" id="email" name="email_to[]">
     </div>
     <div class="form-group">
       <label for="email">Bcc:</label>
-      <input type="text" class="form-control" id="email" name="bcc">
+      <input type="text" class="form-control" id="email" name="email_to[]">
     </div>
     <div class="form-group">
       <label for="email">Subject:</label>

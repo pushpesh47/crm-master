@@ -18,6 +18,7 @@ class CreateSelectList extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('module_type');
+            $table->enum('status',['active','inactive','pending'])->default('active');
             $table->timestamps();
         });
     }

@@ -10,8 +10,8 @@
           <option value="">Correct Lead Sheet</option>
       </select>
     </div>
-    @if(!empty($account))
-      @foreach($account as $acc)
+    @if(!empty($accounts))
+      @foreach($accounts as $acc)
         <input type="hidden" name="accounts[]" value="{{$acc['id']}}">
       @endforeach
     @endif

@@ -118,7 +118,7 @@ class AccountStatusController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/account-status');
-                \Session::flash('success', 'Account Status added Succesful!'); 
+                \Session::flash('success', 'Account Status added Successfully!'); 
            
         }
         return $this->populateresponse();
@@ -174,7 +174,7 @@ class AccountStatusController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/account-status');
-                \Session::flash('success', 'Account Updated Succesful!'); 
+                \Session::flash('success', 'Account Updated Successfully!'); 
            
         }
         return $this->populateresponse();

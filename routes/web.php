@@ -48,9 +48,13 @@
 
 		Route::get('/accounts/import','AccountController@accountImport');
 		Route::post('/accounts/uploadFile','AccountController@uploadFile');
+		Route::post('/accounts/advance_search','AccountController@advanceSearch');
+		Route::post('/accounts/advance_search_filter','AccountController@advanceSearchFilter');
 		Route::get('/accounts/mail','AccountController@mail');
 		Route::post('/accounts/bulk-delete','AccountController@bulkDelete');
 		Route::post('/accounts/mail-sent','AccountController@mailSent');
+		Route::post('/accounts/assign-to-client','AccountController@assignAccounts');
+		Route::post('/accounts/assign/client','AccountController@assignAccountsClient');
 		Route::post('/accounts/mailer-export','AccountController@mailExport');
 		Route::post('/accounts/get-mail-template','AccountController@getMailTemplate');
 		Route::post('/accounts/pdf-export','AccountController@AccountExportPDF');
@@ -75,7 +79,9 @@
 		Route::post('select/{SelectList}/status','SelectListController@changeStatus');
 		Route::get('select/{SelectList}/{id}/edit','SelectListController@edit');
 		Route::post('select/{SelectList}/{id}','SelectListController@update');
-		Route::resource('select/{SelectList}','SelectListController');
+		Route::get('select/{SelectList}','SelectListController@index');
+		Route::get('select/{SelectList}/create','SelectListController@create');
+		Route::post('select/{SelectList}','SelectListController@store');
 
 		Route::post('lead-source/status','LeadSourceController@changeStatus');
 		Route::resource('/lead-source','LeadSourceController');
@@ -87,4 +93,7 @@
 		Route::post('emails/sent','EmailController@SentEmail');
 		Route::resource('/emails','EmailController');
 	});
- 
+	 Route::group(['namespace' => 'Admin','prefix' => 'client'/*, 'middleware' => ['clientAuth']*/] ,function(){
+	 		//Route::get('dashboard/','ClientController@dashboard');
+	 		Route::get('/accounts','AccountController@clientAssignData');
+	 });

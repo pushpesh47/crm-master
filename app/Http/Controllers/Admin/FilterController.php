@@ -60,8 +60,15 @@ class FilterController extends Controller
 
 	public function update(Request $request,$id)
     {
+        //pp($request->column);
+        
+        /*else{
+            pp('failed');
+        }*/
+
     	$validation = new Validations($request);
         $validator   = $validation->addFilter();
+        
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{

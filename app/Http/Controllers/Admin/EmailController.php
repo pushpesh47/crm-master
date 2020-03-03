@@ -121,7 +121,7 @@ class EmailController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/emails');
-                \Session::flash('success', 'Email added Succesful!'); 
+                \Session::flash('success', 'Email added Successfully!'); 
            
         }
         return $this->populateresponse();
@@ -180,7 +180,7 @@ class EmailController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/emails');
-                \Session::flash('success', 'Email Updated Succesful!'); 
+                \Session::flash('success', 'Email Updated Successfully!'); 
            
         }
         return $this->populateresponse();
@@ -215,17 +215,17 @@ class EmailController extends Controller
     }
 
     public function SentEmail(Request $request){
-        pp($request->all());
     	$validation = new Validations($request);
         $validator   = $validation->sentEmail('edit');
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
+            //print_r($request->email_to);
         	foreach ($request->email_to as $key => $email) {
         		$user = \App\Models\Account::where('email',$email)->first();
         		$template = \App\Models\Email::where('id',$request->template)->first();
 				$emailData               = ___email_settings();
-				$emailData['name']       = $user->first_name; 
+				$emailData['name']       = !empty($user->first_name)?$user->first_name:'XYZ'; 
 				$emailData['email']      = !empty($email)?$email:'';
 				$emailData['password']      = '1234567';
 				$emailData['subject']    =  $request->subject;
@@ -234,12 +234,12 @@ class EmailController extends Controller
 				}
 				$emailData['date']       = date('Y-m-d H:i:s');
 				$emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
-				$mailSuccess = ___mail_sender($emailData['email'],$user->first_name,$template->title,$emailData);
+				$mailSuccess = ___mail_sender($emailData['email'],$emailData['name'],$template->title,$emailData);
+
         	}
 			$this->status   = true;
-
-			$this->redirect = true;
-			\Session::flash('success', 'Email Sent Succesful!'); 
+			$this->redirect = url('crm/accounts');
+			\Session::flash('success', 'Email Sent Successfully!'); 
            
         }
         return $this->populateresponse();

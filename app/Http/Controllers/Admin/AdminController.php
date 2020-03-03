@@ -38,13 +38,13 @@ class AdminController extends Controller
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => 'admin'])) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password/*, 'user_type' => 'admin'*/])) {
                 $this->status   = true;
                // $this->modal    = true;
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/dashboard');
-                \Session::flash('success', 'Login Succesful!'); 
+                \Session::flash('success', 'Login Successfully!'); 
             }else{
                 
                 $this->message = $validator->errors()->add('password', 'Wrong email OR password.');
@@ -93,8 +93,8 @@ class AdminController extends Controller
                 // $this->modal    = true;
                 // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
-                $this->redirect = url('crm/profile');
-                \Session::flash('success', 'Profile Updated Succesful!'); 
+                $this->redirect = url('crm/dashboard');
+                \Session::flash('success', 'Profile Updated Successfully!'); 
         }
         return $this->populateresponse();
     }
@@ -117,8 +117,8 @@ class AdminController extends Controller
                 $add = \App\User::where('id',$id)->update($data);*/
                 $this->status   = true;
                
-                $this->redirect = url('crm/change-password');
-                \Session::flash('success', 'Password Updated Succesful!'); 
+                $this->redirect = url('crm/dashboard');
+                \Session::flash('success', 'Password Updated Successfully!'); 
             }else{           
                 $this->message = $validator->errors()->add('old_password', 'Please enter correct password.Old Password not Matched!');
             }

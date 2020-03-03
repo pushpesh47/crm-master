@@ -44,6 +44,7 @@ class CreateTableForAccountTable extends Migration
             $table->string('call_back_time')->nullable();
             $table->string('call_back_date')->nullable();
             $table->enum('status',['active','inactive'])->default('active');
+            
             $table->timestamps();
         });
     }

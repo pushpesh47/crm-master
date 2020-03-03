@@ -111,15 +111,14 @@ form h2
                   </select>
               </div>
             </div>
-
-              <div class="form-row">
+            <div class="form-row">
               <div class="col-sm-3 my-1">
                   <select id="inputState" class="form-control option" name="column[column_name9]">
                     @includeif('crm.accounts._common_field_list');
                   </select>
               </div>
             </div>
-
+             <input type="hidden" name="dups_column">
                <!------------  End--->
           <div class="container tabs1">
             <ul class="nav nav-tabs nav-justified md-tabs indigo" id="myTabJust" role="tablist">
@@ -127,35 +126,34 @@ form h2
               <a class="nav-link active" id="home-tab-just" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just"
                 aria-selected="true">Standard Filters</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" id="profile-tab-just" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just"
                 aria-selected="false">Advanced Filters</a>
-            </li>
+            </li> -->
           </ul>
           <div class="tab-content card pt-5" id="myTabContentJust">
             <div class="tab-pane fade show active" id="home-just" role="tabpanel" aria-labelledby="home-tab-just">
               <h2 class="heading">Simple Time Filter</h2>
                <div class="form-row">
-                        <div class="col-sm-2 my-1">
-                            <label>Select a Column</label>
-                       </div>
-                        <div class="col-sm-10 my-1">
-                            <select id="inputState" class="form-control option" name="column_from">
-                              <option value="date_of_injury">Date Of Injury</option>
-                              <option value="date_of_injury">Date Lead Recieved</option>
-                              <option value="date_of_injury_aware">Date Client Became Aware of Injury</option>
-                              <option value="date_of_injury">facebook_injury_date</option>
-                              <option value="call_back_date">Call Back Date</option>
-                            </select>
-                        </div>
-
+                    <div class="col-sm-2 my-1">
+                        <label>Select a Column</label>
+                   </div>
+                    <div class="col-sm-10 my-1">
+                        <select id="inputState" class="form-control option" name="column_from">
+                          <option value="date_of_injury">Date Of Injury</option>
+                          <option value="date_of_injury">Date Lead Recieved</option>
+                          <option value="date_of_injury_aware">Date Client Became Aware of Injury</option>
+                          <option value="date_of_injury">facebook_injury_date</option>
+                          <option value="call_back_date">Call Back Date</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-row">
-                        <div class="col-sm-2 my-1">
+                       <div class="col-sm-2 my-1">
                             <label>Select a Column</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                            <select id="inputState" class="form-control option" name="column_days">
+                            <select id="inputState_date" class="form-control option" name="column_days">
                               <option value="custom">Custom</option>
                               <option value="prevfy">Previous FY</option>
                               <option value="thisfy">Current FY</option>
@@ -191,7 +189,7 @@ form h2
                             <label>Start Date</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                             <input type="date" class="form-control" placeholder="Value" name="start_date">
+                             <input type="date" id="start_date" class="form-control"  name="start_date">
                         </div>
 
                 </div>
@@ -200,7 +198,7 @@ form h2
                             <label>Start Date</label>
                        </div>
                         <div class="col-sm-10 my-1">
-                             <input type="date" class="form-control" placeholder="Value" name="end_date">
+                             <input type="date" id="end_date" class="form-control"  name="end_date">
                         </div>
 
                 </div>
@@ -249,14 +247,51 @@ form h2
   </div>
 </div>
 @section('requirejs')
-  <!-- <script type="text/javascript">
-    $('#home-tab-just').click(function(){
-      $('#home-just').show();
-      $('#profile-just').hide();
-    });
-    $('#profile-tab-just').click(function(){
-      $('#profile-just').show();
-      $('#home-just').hide();
-    });
-  </script> -->
+<script type="text/javascript">
+  $('#inputState_date').on('change', function() {
+      var date = new Date();
+    if(this.value=='prevfy'){
+      var intYear = date.getFullYear() - 1;
+      var start_date='01-01-'+intYear;
+      var end_date='31-12-'+intYear;
+      $('#start_date').val(start_date);
+      $('#end_date').val(end_date);
+      console.log(start_date);
+    }else if(this.value=='thisfy'){
+       var intYear = date.getFullYear();
+        var start_date='01-01-'+intYear;
+        var end_date='31-12-'+intYear;
+        $('#start_date').val(start_date);
+        $('#end_date').val(end_date);
+    }else if(this.value=='nextfy'){
+       var intYear = date.getFullYear() + 1;
+        var start_date='01-'+'-'+intYear;
+        var end_date='31-12-'+intYear;
+        $('#start_date').val(start_date);
+        $('#end_date').val(end_date);
+    }/*else if(this.value=='prevfq'){
+       var intYear = date.getMonth()-3;
+        var start_date='01-01-'+intYear;
+        var end_date='31-12-'+intYear;
+        $('#start_date').val(start_date);
+        $('#end_date').val(end_date);
+        console.log(intYear);
+    }else if(this.value=='thisfq'){
+       var intYear = date.getMonth()+3;
+        var start_date='01-01-'+intYear;
+        var end_date='31-12-'+intYear;
+        $('#start_date').val(start_date);
+        $('#end_date').val(end_date);
+        console.log(intYear);
+    }else if(this.value=='nextfq'){
+       var intYear = date.getMonth()+6;
+        var start_date='01-01-'+intYear;
+        var end_date='31-12-'+intYear;
+        $('#start_date').val(start_date);
+        $('#end_date').val(end_date);
+        console.log(intYear);
+    }*/
+  });
+</script>
+  
 @endsection

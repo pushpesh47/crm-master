@@ -118,17 +118,26 @@ class UserController extends Controller
                 $data['last_name']=$request->last_name;
                 $data['mobile']=$request->mobile;
                 $data['email']=$request->email;
+                $data['user_type']='client';
                 $data['password']=\Hash::make($request->password);
                 $data['user_role_id']=$request->user_role;
                 $data['created_at']=date('Y-m-d H:i:s');
                 $data['updated_at']=date('Y-m-d H:i:s');
                 $add = User::insertGetId($data);
+                  ///////Email SEND FOR USER CREATE/////////////
+                $emailData               = ___email_settings();
+                $emailData['name']       = $request->first_name;//$user->first_name; 
+                $emailData['email']      = $request->email;//!empty($email)?$email:'';
+                $emailData['password']   = $request->password;
+                $emailData['url']        = url('crm/login');
+                $emailData['subject']    =  'Welcome on Board ! CRM credential';//
+                $emailData['message']    =  'Welcome on Board !Please find your CRM credentials below ';
+                $emailData['date']       = date('Y-m-d H:i:s');
+                $emailData['custom_text'] = 'Your Account created successfully';
+                $mailSuccess = ___mail_sender($emailData['email'],$request->name,'registration_details',$emailData);
                 $this->status   = true;
-               // $this->modal    = true;
-               // $this->alert    = true;
-                //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/user');
-                \Session::flash('success', 'User added Succesful!'); 
+                \Session::flash('success', 'User added Successfully!'); 
            
         }
         return $this->populateresponse();
@@ -203,7 +212,7 @@ class UserController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/user');
-                \Session::flash('success', 'user Updated Succesful!'); 
+                \Session::flash('success', 'user Updated Successfully!'); 
            
         }
         return $this->populateresponse();

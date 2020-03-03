@@ -845,6 +845,7 @@
 
     function has_dupes($array) {
        // streamline per @Felix
+        //dd(count($array),count(array_unique($array)));
        return count($array) !== count(array_unique($array));
     }
 

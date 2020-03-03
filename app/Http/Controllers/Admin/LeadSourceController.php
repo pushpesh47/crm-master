@@ -118,7 +118,7 @@ class LeadSourceController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/lead-source');
-                \Session::flash('success', 'Lead Source added Succesful!'); 
+                \Session::flash('success', 'Lead Source added Successfully!'); 
            
         }
         return $this->populateresponse();
@@ -174,7 +174,7 @@ class LeadSourceController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/lead-source');
-                \Session::flash('success', 'Lead Source Updated Succesful!'); 
+                \Session::flash('success', 'Lead Source Updated Successfully!'); 
            
         }
         return $this->populateresponse();

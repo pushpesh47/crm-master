@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 Use App\Models\Account;
+Use App\Models\User;
+Use App\Models\Leads;
+
 class LeadsExternal extends Controller
 {
    function sendEmail($name='',$email='')
@@ -36,6 +39,7 @@ class LeadsExternal extends Controller
     }
     
 	public function getLead(){
+
 		$st = date('Y-m-d',strtotime("-1 days"));
 		$t = date('00:00:00+0000');
 		$create_time = strtotime($st.'T'.$t);
@@ -45,7 +49,7 @@ class LeadsExternal extends Controller
 			"value" => $create_time
 		)];
 		$filter = json_encode($filter);
-		$page_access_token='EAADB8YA7LhoBAMBsbZA4DgPJA3SwAfHLEr1dnSWu5qLtxAG0HX3toKSPZAaOAZBbtW1rHIN1YtjwPgJ7OZBzd5K9DUjkhwuURgTeh3ZBIqRPmbKtH2mGYBc5h6okx3A6NrZBBJhCUvWVLnffRfIau889kts4UtrZAxCvHepOnjirAZDZD';
+		$page_access_token='EAADB8YA7LhoBAAfCLVl6h5fZBMVCLtE8iqJTpyZBlaVjelri3CyOGglJPP0DNeZCCYsBnNS9ZAWX2tZBJIM06qRwbZBLmgywdUrMJWhowunYGtFvLGvZBATiwADZC5fAKA7xnYiq5WHHVKOy1g15JEM8nlG8O3hN2XUTUZATzYtA2gQZDZD';
 		$URL='https://graph.facebook.com/v4.0/912590792245688/leadgen_forms?access_token='.$page_access_token;
 		$curl_handle=curl_init();
 		curl_setopt($curl_handle,CURLOPT_URL,$URL);
@@ -53,6 +57,9 @@ class LeadsExternal extends Controller
 		curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
 		$buffer = curl_exec($curl_handle);
 		curl_close($curl_handle);
+		
+		// echo "<pre>";
+		
 		if (empty($buffer)){
 		  print "Nothing returned from url.<p>";
 		}
@@ -95,7 +102,7 @@ class LeadsExternal extends Controller
 								$four = $value1['field_data'][4]['name'];
 								$data["$four"]=!empty($value1['field_data'][4]['values'][0])?$value1['field_data'][4]['values'][0]:'';
 							}
-
+							// print_r($data);
 							$this->createLeadInVtiger($data);
 						}
 						$i++;
@@ -119,7 +126,7 @@ class LeadsExternal extends Controller
 			$data['date_of_injury']=!empty($elements['date_of_injury_or_negligence'])?$elements['date_of_injury_or_negligence']:'';
 		}
 		$data['mobile']=!empty($elements['phone_number'])?$elements['phone_number']:'';
-		$data['sales_agent']='1';
+		
 		$data['lead_source']='Facebook';
 		$data['account_status']='New';
 		$data['date_lead_recieved']=!empty(date('d-m-Y',strtotime($elements['cf_853'])))?date('d-m-Y',strtotime($elements['cf_853'])):'';
@@ -128,6 +135,13 @@ class LeadsExternal extends Controller
 		//$jsonValue = json_encode($data,true);
 		
 		$value= _arefy(Account::where(['email'=>$data['email'],'date_lead_recieved'=>$data['date_lead_recieved']])->get());
+		
+		echo "<pre>";
+		$nextAgentId = $this->getNextAgentId();    
+		// print_r($nextAgentId);
+		// exit; 
+		$data['sales_agent']=$nextAgentId;
+
 		if(empty($value)){
 			$get=Account::orderBy('id','desc')->first();
 			if(!empty($get)){
@@ -139,11 +153,61 @@ class LeadsExternal extends Controller
 		   // $sms = $this->sendEmail($data['name'],$data['email']);
 			$response =Account::insert($data);
 			if($response){
-				echo 'success';
+				echo 'success <br>';
 			}else{
-				echo 'failed';
+				echo 'failed  <br>';
 			}
 		}
 
 	}
+
+	function getNextAgentId(){
+		$agentList = User::where('user_role_id','=','2')->get();
+        $leadsCount = Account::all()->count();
+        $lastAgent = Account::orderby('id', 'desc')->first(); 
+		$lastAgentId = "";
+		$nextAgentId = "";    
+		// print_r($lastAgent);
+		// exit;    
+        if($leadsCount > 0){
+            $lastAgent = $lastAgent->get();
+            foreach($lastAgent as $la){
+                $lastAgentId = $la->sales_agent;
+            }
+		}
+		if($lastAgentId == 0 || $leadsCount == ''){
+			$leadsCount=0;
+		}
+		start:
+        if($leadsCount == 0){
+			foreach($agentList as $al){
+                $nextAgentId = $al->id;
+                break;
+            }
+        }else{
+            $i = 1; $j =1;
+            foreach($agentList as $al){
+                if($lastAgentId == $al->id){
+                    break;
+                }
+                $i++;
+            }
+
+            if($i == count($agentList)){
+                $leadsCount = 0;
+                goto start;
+            }
+
+            foreach($agentList as $al){
+                $nextAgentId = $al->id;
+                if($j == ($i + 1)){
+                    break;
+                }
+                $j++;
+            }
+		}
+		return $nextAgentId;
+	}
+
+	
 }

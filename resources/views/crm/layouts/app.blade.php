@@ -7,10 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_token" content="{{csrf_token()}}">
-	<link rel="icon" href="{{url('assest/images/favicon.ico')}}" type="image/ico" />
-
-    <title>CRM! | </title>
-
+	<link rel="icon" href="{{url('assets/images/logos.png')}}" type="image/ico" />
+    <title>ONLINE|CRM</title>
     <!-- Bootstrap -->
     <link href="{{url('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Font Awesome -->
@@ -19,14 +17,12 @@
     <link href="{{url('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
     <!-- iCheck -->
     <link href="{{url('assets/vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
-	
     <!-- bootstrap-progressbar -->
     <link href="{{url('assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
     <!-- JQVMap -->
     <link href="{{url('assets/vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
     <link href="{{url('assets/vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
-
     <!-- Custom Theme Style -->
     <link href="{{url('assets/build/css/custom.min.css')}}" rel="stylesheet">
     <link href="{{url('assets/build/css/custom.css')}}" rel="stylesheet">
@@ -35,16 +31,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
-
-    
-
-
     @yield('requirecss')
   </head>
-
   <body class="nav-md" >
+    <div id="cover"></div>
     <div class="container body" >
-      <div class="main_container">
+      <div class="main_container"  >
         @yield('content')
       </div>
     </div>
@@ -85,10 +77,10 @@
     <script src="{{url('assets/vendors/jqvmap/dist/maps/jquery.vmap.world.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-                setTimeout(function(){
-                    $('#coverss').fadeOut(500);
-                },100)
-            });
+            setTimeout(function(){
+                $('#cover').fadeOut(500);
+            },100)
+        });
         $(function () {
             $.ajaxSetup({
                 headers: {

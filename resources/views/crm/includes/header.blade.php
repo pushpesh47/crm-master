@@ -12,12 +12,14 @@
               <img src="{{url('assets/images/img.jpg')}}" alt="">{{\Auth::user()->first_name}}
             </a>
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                @if(\Auth::user()->user_type=='admin')
               <a class="dropdown-item"  href="{{url('crm/profile')}}"> Profile</a>
               <a class="dropdown-item"  href="{{url('crm/change-password')}}">Change password</a>
                 <a class="dropdown-item"  href="{{url('crm/setting')}}">
                  
                   <span>Settings</span>
                 </a>
+                @endif
             {{-- <a class="dropdown-item"  href="javascript:;">Help</a> --}}
               <a class="dropdown-item"  href="{{url('crm/logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
             </div>

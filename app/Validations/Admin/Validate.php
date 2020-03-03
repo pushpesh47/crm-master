@@ -95,9 +95,9 @@ class Validate
 			    		$validator->errors()->add('email', 'No Account Found With This Email.');
 			    	}/*elseif($userDetails->status!='active'){
 			    		$validator->errors()->add('mobile_number', 'Your account is not active.Please contact with adminstrator for more info.');
-			    	}*/elseif($userDetails->user_type!='admin'){
+			    	}elseif($userDetails->user_type!='admin'){
 			    		$validator->errors()->add('email', 'You are not authorised user to login.');
-			    	}
+			    	}*/
 			    	    
 			    });
 			}
@@ -137,7 +137,6 @@ class Validate
 			}
 
 		}else{
-			
 			if(!empty($this->data->mobile)){
 				$userDetails = Account::where('mobile',$this->data->mobile)->first();
 				$validator->after(function ($validator) use($userDetails) {
@@ -605,6 +604,27 @@ class Validate
 	{
 		$validations = [
 			'view_name'					=> $this->validation('name'),
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		foreach ($this->data->column as $key => $value) {
+		    if(!empty($value)){
+		        $arr[]=$value;
+		    }
+		}
+		if(!empty($arr)){
+			if(has_dupes($arr)){
+				$validator->after(function ($validator) use($arr) {
+					   $validator->errors()->add('dups_column', 'Please select Unique Column list.'); 
+				});
+			}
+		}
+		return $validator;
+	}
+
+	public function assignAccountsClient($action="add")
+	{
+		$validations = [
+			'assign_email'					=> $this->validation('id'),
     	];
     	$validator = \Validator::make($this->data->all(), $validations,[]);
 		return $validator;

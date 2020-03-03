@@ -104,21 +104,14 @@ class UserRoleController extends Controller
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
-                
                 $data['profile_name']=$request->profile_name;
                 $data['created_at']=date('Y-m-d H:i:s');
                 $data['updated_at']=date('Y-m-d H:i:s');
                 $add = UserRole::insertGetId($data);
-                
-                /*if($add){
-                    $more[]
-                }*/
+              
                 $this->status   = true;
-               // $this->modal    = true;
-               // $this->alert    = true;
-                //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/user-role');
-                \Session::flash('success', 'User Role added Succesful!'); 
+                \Session::flash('success', 'User Role added Successfully!'); 
            
         }
         return $this->populateresponse();
@@ -184,7 +177,7 @@ class UserRoleController extends Controller
                // $this->alert    = true;
                 //$this->message  = "Admin Login successfully.";
                 $this->redirect = url('crm/user-role');
-                \Session::flash('success', 'Account Updated Succesful!'); 
+                \Session::flash('success', 'Account Updated Successfully!'); 
            
         }
         return $this->populateresponse();

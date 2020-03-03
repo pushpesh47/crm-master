@@ -17,9 +17,12 @@ class AdminAuth
     {
         $user = $request->user();
         
-        if (! $user || ($user->user_type != 'admin')){
+        if (! $user /*|| ($user->user_type != 'admin')*/){
             return redirect('crm/login');
+        }elseif ($user->user_type == 'client') {
+            return redirect('client/accounts');
         }
+        
         return $next($request);
     }
 }

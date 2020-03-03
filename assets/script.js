@@ -260,7 +260,7 @@ $(document).on('change','[data-request="ajax-get-form-change"]',function(){
     var $id             = $this.data('id');
     var $target         = $this.data('target');
     var $url            = $this.data('url');
-    window.location.href=$url+'?filter='+$values+'&module='+$type;
+    window.location.href=$url+'?filters='+$values+'&module='+$type;
    /* $formData.append('filter',$values);
     $.ajax({
         url:$url,
